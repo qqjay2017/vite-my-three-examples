@@ -7,11 +7,15 @@ export interface AddSpreadFnProps {
   topColor?: string | number;
   bottomColor?: string | number;
   duration?: number;
+  lightWidth?: number;
+  radius?: number;
   id?: string;
   //   distancePos?: "xy" | "xz" | "yz";
 }
 const defaultParams = {
   duration: 2,
+  radius: 50,
+  lightWidth: 4,
   topColor: "#aaaeff",
   bottomColor: 0x0c0e6f,
   id: genId(),
@@ -31,8 +35,12 @@ export function addHeightGradientCube(_params: AddSpreadFnProps) {
   });
   const boxMesh = new THREE.Mesh(box, boxMaterial);
   const uTopColorKey = `uTopColor_${id}`;
+  const uTimeKey = `uTime_${id}`;
+  const uLightWidthKey = `uLightWidthKey_${id}`;
+
   const uHeightKey = `uHeightKey_${id}`;
   const vPositionKey = `vPosition_${id}`;
+
   boxMesh.geometry.computeBoundingBox();
   const min = boxMesh.geometry.boundingBox?.min;
   const max = boxMesh.geometry.boundingBox?.max;
@@ -49,6 +57,12 @@ export function addHeightGradientCube(_params: AddSpreadFnProps) {
 
     shader.uniforms[uTopColorKey] = {
       value: new THREE.Color(params.topColor),
+    };
+    shader.uniforms[uTimeKey] = {
+      value: -50
+    };
+    shader.uniforms[uLightWidthKey] = {
+      value: params.lightWidth,
     };
     shader.uniforms[uHeightKey] = {
       value: uHeight,
@@ -76,13 +90,18 @@ export function addHeightGradientCube(_params: AddSpreadFnProps) {
       "#include <common>",
       `
   #include <common>
+  //  渐变
   uniform vec3 ${uTopColorKey};
   uniform float ${uHeightKey};
+ 
 
   varying vec3 ${vPositionKey};
+  // 光带
+  uniform float ${uTimeKey};
+  uniform float ${uLightWidthKey};
   `
     );
-
+   // 渐变
     shader.fragmentShader = shader.fragmentShader.replace(
       "//#end#",
       `
@@ -96,12 +115,25 @@ export function addHeightGradientCube(_params: AddSpreadFnProps) {
   //#end#
   `
     );
-    // gsap.to(shader.uniforms[uSpreadTimeKey], {
-    //   value: params.radius,
-    //   duration: duration,
-    //   ease: "none",
-    //   repeat: -1,
-    // });
+
+    // 光带
+    shader.fragmentShader = shader.fragmentShader.replace(
+      "//#end#",
+      `
+      // 扩散范围
+float lightLineMix${id} = -( ${vPositionKey}.y- ${uTimeKey}) * ( ${vPositionKey}.y -  ${uTimeKey}) + ${uLightWidthKey};
+if(lightLineMix${id} > 0.0){
+  // 0-1的混合
+  gl_FragColor = mix( gl_FragColor , vec4(0.8,0.8,1.0,1.0), lightLineMix${id} / ${uLightWidthKey});
+}
+      `
+    )
+    gsap.to(shader.uniforms[uTimeKey], {
+      value: params.radius,
+      duration: duration,
+      ease: "none",
+      repeat: -1,
+    });
   };
 
   scene && scene.add(boxMesh);

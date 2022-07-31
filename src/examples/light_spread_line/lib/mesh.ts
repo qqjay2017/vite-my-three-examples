@@ -19,13 +19,13 @@ const defaultParams = {
     x: 0,
     y: 0,
   },
-  duration: 2,
+  duration: 4,
   spreadWidth: 10,
-  radius: 50,
+  radius: 100,
   id: genId(),
   distancePos: "xy",
 };
-export function addSpread(_params: AddSpreadFnProps) {
+export function addLightSpreadLine(_params: AddSpreadFnProps) {
   const params = {
     ...defaultParams,
     ..._params,
@@ -40,7 +40,7 @@ export function addSpread(_params: AddSpreadFnProps) {
     transparent: true,
   });
   const planeMesh = new THREE.Mesh(plane, planeMaterial);
-  const uSpreadCenterKey = `uSpreadCenter_${id}`;
+
   const vPositionKey = `vPosition_${id}`;
   const uSpreadTimeKey = `uSpreadTime_${id}`;
   const uSpreadWidthKey = `uSpreadWidth_${id}`;
@@ -54,11 +54,9 @@ export function addSpread(_params: AddSpreadFnProps) {
          `
     );
 
-    shader.uniforms[uSpreadCenterKey] = {
-      value: new THREE.Vector2(center.x, center.y),
-    };
+
     shader.uniforms[uSpreadTimeKey] = {
-      value: 0,
+      value: -200,
     };
     shader.uniforms[uSpreadWidthKey] = {
       value: spreadWidth,
@@ -85,7 +83,7 @@ export function addSpread(_params: AddSpreadFnProps) {
       "#include <common>",
       `
   #include <common>
-  uniform vec2 ${uSpreadCenterKey};
+
   uniform float ${uSpreadWidthKey};
   uniform float ${uSpreadTimeKey};
 
@@ -96,13 +94,13 @@ export function addSpread(_params: AddSpreadFnProps) {
     shader.fragmentShader = shader.fragmentShader.replace(
       "//#end#",
       `
-// 算出和中心点的距离 // xz or xy or yz ? 都试下,效果不一样
-float spreadRadius${id} = distance( ${vPositionKey}.${params.distancePos} , ${uSpreadCenterKey} ) ;
-// 扩散范围
-float spreadIndex${id} = -( spreadRadius${id} - ${uSpreadTimeKey}) * ( spreadRadius${id} - ${uSpreadTimeKey}) + ${uSpreadWidthKey};
-if(spreadIndex${id} > 0.0){
+
+
+// 扩散范围  如果要斜着走: vPositionKey.z 改成 vPositionKey.y, 左右两个都改 
+float lightLineMix${id} = -( ${vPositionKey}.x+ ${vPositionKey}.z- ${uSpreadTimeKey}) * ( ${vPositionKey}.x+ ${vPositionKey}.z - ${uSpreadTimeKey}) + ${uSpreadWidthKey};
+if(lightLineMix${id} > 0.0){
   // 0-1的混合
-  gl_FragColor = mix( gl_FragColor , vec4(1.0,1.0,1.0,1.0), spreadIndex${id} / ${uSpreadWidthKey});
+  gl_FragColor = mix( gl_FragColor , vec4(1.0,1.0,1.0,1.0), lightLineMix${id} / ${uSpreadWidthKey});
 }
   //#end#
   `
@@ -114,7 +112,7 @@ if(spreadIndex${id} > 0.0){
       repeat: -1,
     });
   };
- 
+
 
   scene && scene.add(planeMesh);
 
