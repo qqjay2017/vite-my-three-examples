@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect } from "react";
+import { MeshBase } from "./lib";
 
-function MeshBase() {
-  return (
-    <div>
-      MeshBase
-    </div>
-  );
-}
-
-export default MeshBase;
+export default () => {
+  useEffect(() => {
+    const meshBase = new MeshBase();
+    document
+      .getElementById("MeshBase")
+      ?.appendChild(meshBase.renderer.domElement);
+    meshBase.animate();
+  }, []);
+  return <div id="MeshBase"></div>;
+};

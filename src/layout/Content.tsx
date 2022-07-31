@@ -13,7 +13,7 @@ const ContentStyle = styled.div<{ open: boolean }>`
     props.open ? sizeConstant.sidebarSize : sizeConstant.sidebarCloseSize};
   z-index: 1;
   overflow-x: hidden;
-  padding: ${sizeConstant.normalSpace};
+  /* padding: ${sizeConstant.normalSpace}; */
 `;
 function Content({ open }: { open: boolean }) {
   return (
