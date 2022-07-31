@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import styled from "styled-components";
 import { isMobile } from "../utils/detect-browser";
 import Content from "./Content";
@@ -16,6 +17,7 @@ function Layout() {
   const setContentKey = () => {
     _setContentKey(contentKey + 1);
   };
+
   return (
     <LayoutStyle>
       <Sidebar open={open} setOpen={setOpen} setContentKey={setContentKey} />

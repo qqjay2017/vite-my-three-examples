@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Link, LinkProps, useMatch, useResolvedPath } from "react-router-dom";
+import {
+  Link,
+  LinkProps,
+  Navigate,
+  useLocation,
+  useMatch,
+  useResolvedPath,
+} from "react-router-dom";
 import styled from "styled-components";
 import { colorConstant, sizeConstant } from "../constant";
 import { genExampleRoutes } from "../router/helper/routeHelper";
@@ -107,7 +114,7 @@ function CustomLink({ children, to, ...props }: LinkProps) {
     </div>
   );
 }
-
+const exampleRoutes = genExampleRoutes(false);
 function Sidebar({
   open,
   setOpen,
@@ -117,6 +124,10 @@ function Sidebar({
   setOpen: Function;
   setContentKey: Function;
 }) {
+  const { pathname } = useLocation();
+  if ((!pathname || pathname == "/") && exampleRoutes && exampleRoutes.length) {
+    return <Navigate to={exampleRoutes[0].path!} />;
+  }
   return (
     <SidebarStyle className={open ? "open" : "close"}>
       <Title>
@@ -124,7 +135,7 @@ function Sidebar({
         {open && <TitleText>three example</TitleText>}
       </Title>
       <SidebarBody>
-        {genExampleRoutes(false).map((route, index) => {
+        {exampleRoutes.map((route, index) => {
           return (
             <CustomLink to={`/${route.path}`} key={index}>
               <LinkTextStyle>{route.path}</LinkTextStyle>
