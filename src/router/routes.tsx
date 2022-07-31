@@ -1,18 +1,19 @@
-import React from "react";
+import React, { memo } from "react";
 import { useRoutes } from "react-router-dom";
 
 import Layout from "/@/layout";
-import { exampleRoutes } from "./helper/routeHelper";
+import { genExampleRoutes } from "./helper/routeHelper";
 
 function Routes() {
   const router = useRoutes([
     {
       path: "/",
       element: <Layout />,
-      children: exampleRoutes,
+      children: genExampleRoutes(),
     },
   ]);
+
   return router;
 }
 
-export default Routes;
+export default memo(Routes);

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, LinkProps, useMatch, useResolvedPath } from "react-router-dom";
 import styled from "styled-components";
 import { colorConstant, sizeConstant } from "../constant";
-import { exampleRoutes } from "../router/helper/routeHelper";
+import { genExampleRoutes } from "../router/helper/routeHelper";
 import { isMobile } from "../utils/detect-browser";
 import three_icon from "/@/assets/svg/three_icon.svg";
 // import { useMediaQuery } from "react-responsive";
@@ -116,7 +116,7 @@ function Sidebar({ open, setOpen }: { open: boolean; setOpen: Function }) {
         {open && <TitleText>three example</TitleText>}
       </Title>
       <SidebarBody>
-        {exampleRoutes.map((route, index) => {
+        {genExampleRoutes(false).map((route, index) => {
           return (
             <CustomLink to={`/${route.path}`} key={index}>
               <LinkTextStyle>{route.path}</LinkTextStyle>
