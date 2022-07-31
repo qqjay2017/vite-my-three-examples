@@ -21,7 +21,7 @@ const SidebarStyle = styled.div`
   top: 0;
   left: 0;
   z-index: 2;
-  overflow-x: hidden;
+  overflow: hidden;
 
   transition: 0.3s;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
