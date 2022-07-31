@@ -1,22 +1,23 @@
-import { camera } from "./camera";
-import { controls } from "./controls";
-import { renderer } from "./renderer";
-import { scene } from "./scene";
-import { axesHelper } from "./helper";
-import { addCube } from "./mesh";
+import { getCamera } from "./camera";
+import { getControls } from "./controls";
+import { getRenderer } from "./renderer";
+import { getScene } from "./scene";
 
+import { addCube } from "./mesh";
+import { getAxesHelper } from "./helper";
 export class MeshBase {
-  camera = camera;
-  controls = controls;
-  scene = scene;
-  renderer = renderer;
+  camera = getCamera();
+
+  scene = getScene();
+  renderer = getRenderer();
+  controls = getControls(this.camera, this.renderer);
   constructor() {
     this.init();
   }
   init() {
     this.scene.add(this.camera);
 
-    this.scene.add(axesHelper);
+    this.scene.add(getAxesHelper());
     addCube(this.scene);
     window.addEventListener("resize", this.resizeHandle);
   }

@@ -108,7 +108,15 @@ function CustomLink({ children, to, ...props }: LinkProps) {
   );
 }
 
-function Sidebar({ open, setOpen }: { open: boolean; setOpen: Function }) {
+function Sidebar({
+  open,
+  setOpen,
+  setContentKey,
+}: {
+  open: boolean;
+  setOpen: Function;
+  setContentKey: Function;
+}) {
   return (
     <SidebarStyle className={open ? "open" : "close"}>
       <Title>
@@ -126,13 +134,23 @@ function Sidebar({ open, setOpen }: { open: boolean; setOpen: Function }) {
       </SidebarBody>
       <SidebarFooter open={open}>
         {open ? (
-          <ToggleIconWrap onClick={() => setOpen(false)}>
+          <ToggleIconWrap
+            onClick={() => {
+              setOpen(false);
+              setContentKey();
+            }}
+          >
             <FaToggleOn
               style={{ color: colorConstant.secondaryColor, fontSize: "20px" }}
             />
           </ToggleIconWrap>
         ) : (
-          <ToggleIconWrap onClick={() => setOpen(true)}>
+          <ToggleIconWrap
+            onClick={() => {
+              setOpen(true);
+              setContentKey();
+            }}
+          >
             <FaToggleOff
               style={{
                 color: colorConstant.secondaryTextColor,

@@ -12,9 +12,13 @@ const LayoutStyle = styled.div`
 
 function Layout() {
   const [open, setOpen] = useState(isMobile() ? false : true);
+  const [contentKey, _setContentKey] = useState(1);
+  const setContentKey = () => {
+    _setContentKey(contentKey + 1);
+  };
   return (
     <LayoutStyle>
-      <Sidebar open={open} setOpen={setOpen} />
+      <Sidebar open={open} setOpen={setOpen} setContentKey={setContentKey} />
       <Content open={open} />
     </LayoutStyle>
   );

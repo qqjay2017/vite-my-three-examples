@@ -1,3 +1,6 @@
 import * as THREE from "three";
 
-export const axesHelper = new THREE.AxesHelper(500);
+export function getAxesHelper() {
+  const axesHelper = new THREE.AxesHelper(500);
+  return axesHelper;
+}

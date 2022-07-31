@@ -1,3 +1,6 @@
 import * as THREE from "three";
 
-export const scene = new THREE.Scene();
+export function getScene() {
+  const scene = new THREE.Scene();
+  return scene;
+}

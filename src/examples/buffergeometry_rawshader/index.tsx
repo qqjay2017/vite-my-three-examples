@@ -1,17 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { BuffergeometryRawshader } from "./lib";
+import { observe } from "/@/utils/observerUtil";
 
 export default () => {
+  const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const meshBase = new BuffergeometryRawshader();
-    const container = document.getElementById("BuffergeometryRawshader");
-    if (container) {
-      if (container.hasChildNodes()) {
-        container.removeChild(container.firstChild!);
-      }
+    if (!containerRef.current) {
+      return;
     }
-    container?.appendChild(meshBase.renderer.domElement);
-    meshBase.animate();
+    let br: BuffergeometryRawshader = new BuffergeometryRawshader();
+
+    const container = containerRef.current;
+
+    container.appendChild(br.renderer.domElement);
+    br.animate();
+    observe(container, () => {
+      br.resizeHandle();
+    });
   }, []);
-  return <div id="BuffergeometryRawshader"></div>;
+  return <div ref={containerRef}></div>;
 };
