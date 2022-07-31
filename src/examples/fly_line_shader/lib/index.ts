@@ -1,4 +1,4 @@
-import { addSpread } from "./mesh";
+import { addFlyLine } from "./mesh";
 
 import { getCamera } from "/@/lib-common/camera";
 import { getRenderer } from "/@/lib-common/renderer";
@@ -6,15 +6,14 @@ import { getControls } from "/@/lib-common/controls";
 import { getScene } from "/@/lib-common/scene";
 import { getClock } from "/@/lib-common/clock";
 import { getAxesHelper } from "/@/lib-common/helper";
-import { getAmbientLight } from "/@/lib-common/light";
-export class SpreadShader {
+import { addCube } from "../../mesh_base/lib/mesh";
+export class FlyLine {
   camera = getCamera({
-    x: 0,
-    y: 200,
-    z: 250,
+    x: 15,
+    y: 6,
+    z: 19,
   });
   renderer = getRenderer();
-  ambientLight = getAmbientLight()
   controls = getControls(this.camera, this.renderer);
   scene = getScene();
 
@@ -26,9 +25,13 @@ export class SpreadShader {
 
   init() {
     this.scene.add(getAxesHelper());
-    this.scene.add(this.ambientLight);
-    addSpread({
+    // addCube(this.scene);
+    addFlyLine({
       scene: this.scene,
+      position:{
+        x:10,
+        z:2
+      }
     });
     window.addEventListener("resize", this.resizeHandle.bind(this));
   }
