@@ -1,4 +1,4 @@
-import { addHeightGradientCube } from "./mesh";
+import { addHeightGradientCube, addHeightGradientCylinder } from "./mesh";
 
 import { getCamera } from "/@/lib-common/camera";
 import { getRenderer } from "/@/lib-common/renderer";
@@ -27,6 +27,10 @@ export class HeightGradient {
     addHeightGradientCube({
       scene: this.scene,
     });
+    addHeightGradientCylinder({
+      scene: this.scene,
+      color:'#FF9800'
+    })
     window.addEventListener("resize", this.resizeHandle.bind(this));
   }
 

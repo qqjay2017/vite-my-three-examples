@@ -2,7 +2,7 @@ import gsap from "gsap";
 import * as THREE from "three";
 import { genId } from "/@/utils/genId";
 
-export interface AddSpreadFnProps {
+export interface AddHeightGradientCubeFnProps {
   scene?: THREE.Scene;
   topColor?: string | number;
   bottomColor?: string | number;
@@ -16,7 +16,7 @@ const defaultParams = {
   bottomColor: 0x0c0e6f,
   id: genId(),
 };
-export function addHeightGradientCube(_params: AddSpreadFnProps) {
+export function addHeightGradientCube(_params: AddHeightGradientCubeFnProps) {
   const params = {
     ...defaultParams,
     ..._params,
@@ -111,4 +111,113 @@ export function addHeightGradientCube(_params: AddSpreadFnProps) {
     boxMaterial,
     boxMesh,
   };
+}
+
+export interface AddHeightGradientCylinderFnProps {
+  scene?: THREE.Scene;
+  
+  color?: string | number;
+  duration?: number;
+  radius?:number;
+  length?:number;
+  position?:{
+    x:number;
+    y:number;
+    z:number;
+  },
+  id?: string;
+  //   distancePos?: "xy" | "xz" | "yz";
+}
+
+const defaultGradientCylinderParams = {
+  duration: 1,
+  radius:50,
+  length:2,
+  position: {
+    x:30,
+    y:1,
+    z:0
+  },
+  color: 0xff0000,
+  id: genId(),
+};
+
+export function addHeightGradientCylinder(
+  _params: AddHeightGradientCylinderFnProps
+) {
+  const params = {
+    ...defaultGradientCylinderParams,
+    ..._params,
+  };
+  const { id ,scene , radius,position,duration} = params;
+
+  const uHeightKey = `uHeightKey_${id}`;
+  const vPositionKey = `vPosition_${id}`;
+  const uColorKey = `uColor_${id}`;
+  const cylinder = new THREE.CylinderGeometry(radius, radius, 30, 100,1, true);
+  const cylinderMaterial = new THREE.ShaderMaterial({
+   
+    transparent:true,
+    side: THREE.DoubleSide,
+    vertexShader:`
+
+    precision mediump float;
+		precision mediump int;
+
+    varying vec3 ${vPositionKey};
+	
+
+      void main()	{
+        // 下发到片元着色器
+				${vPositionKey} = position;
+
+				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+			}
+
+    `,
+    fragmentShader:`
+    precision mediump float;
+    precision mediump int;
+    varying vec3 ${vPositionKey};
+
+    uniform float ${uHeightKey};
+    uniform vec3 ${uColorKey};
+
+
+    void main()	{
+
+      // 设置混合的百分比
+      float gradMix${id} = (${vPositionKey}.y +  (${uHeightKey} / 2.0)) / ${uHeightKey};
+      gl_FragColor = vec4( ${uColorKey} ,1.0- gradMix${id});
+
+    }
+
+    
+    `
+  });
+  const cylinderMesh = new THREE.Mesh(cylinder, cylinderMaterial);
+  cylinderMesh.position.set(position.x,position.y,position.z)
+  cylinderMesh.geometry.computeBoundingBox()
+  let boundingBox = cylinderMesh.geometry.boundingBox;
+  const uHeight = (boundingBox?.max.y  || 0)- (boundingBox?.min.y ||0)
+
+cylinderMaterial.uniforms[uHeightKey]= {
+  value :uHeight
+}
+cylinderMaterial.uniforms[uColorKey]= {
+  value :new THREE.Color(params.color)
+}
+  scene && scene.add(cylinderMesh);
+
+
+  gsap.to(cylinderMesh.scale,{
+    
+    x:length,
+    z:length,
+    duration:duration,
+    repeat:-1,
+    yoyo:true
+  })
+  
 }

@@ -28,6 +28,7 @@ export class FlyLine {
     // addCube(this.scene);
     addFlyLine({
       scene: this.scene,
+      pointLength:1200,
       position:{
         x:10,
         z:2
