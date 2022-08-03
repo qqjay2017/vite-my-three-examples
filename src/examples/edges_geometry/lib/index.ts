@@ -1,4 +1,4 @@
-import { addLightRadar } from "./mesh";
+import { addEdgesGeometry } from "./mesh";
 
 import { getCamera } from "/@/lib-common/camera";
 import { getRenderer } from "/@/lib-common/renderer";
@@ -6,12 +6,11 @@ import { getControls } from "/@/lib-common/controls";
 import { getScene } from "/@/lib-common/scene";
 import { getClock } from "/@/lib-common/clock";
 import { getAxesHelper } from "/@/lib-common/helper";
-import { addCube } from "../../mesh_base/lib/mesh";
-export class LightRadar {
+export class EdgesGeometry {
   camera = getCamera({
-    x: 60,
-    y: 50,
-    z: 19,
+    x: 226,
+    y: 178,
+    z: 138,
   });
   renderer = getRenderer();
   controls = getControls(this.camera, this.renderer);
@@ -25,14 +24,8 @@ export class LightRadar {
 
   init() {
     this.scene.add(getAxesHelper());
-    // addCube(this.scene);
-    addLightRadar({
+    addEdgesGeometry({
       scene: this.scene,
-      color:'#FF9800',
-      position:{
-        x:0,
-        z:0
-      }
     });
     window.addEventListener("resize", this.resizeHandle.bind(this));
   }
