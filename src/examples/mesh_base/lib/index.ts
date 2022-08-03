@@ -5,6 +5,7 @@ import { getScene } from "./scene";
 
 import { addCube } from "./mesh";
 import { getAxesHelper } from "./helper";
+import { getLight } from "./light";
 export class MeshBase {
   camera = getCamera();
 
@@ -16,10 +17,10 @@ export class MeshBase {
   }
   init() {
     this.scene.add(this.camera);
-
+    this.scene.add(getLight().ambientLight)
     this.scene.add(getAxesHelper());
     addCube(this.scene);
-    window.addEventListener("resize", this.resizeHandle);
+    window.addEventListener("resize", this.resizeHandle.bind(this));
   }
   resizeHandle() {
     this.camera.aspect = window.innerWidth / innerHeight;
@@ -27,12 +28,11 @@ export class MeshBase {
     this.camera.updateProjectionMatrix();
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-
-    this.renderer.setPixelRatio(window.devicePixelRatio);
   }
   animate() {
     // let time = this.clock.getElapsedTime()
     // console.log(time)
+    // console.log(this.camera);
     this.controls.update();
     this.camera.updateProjectionMatrix();
     // 修复this指向
