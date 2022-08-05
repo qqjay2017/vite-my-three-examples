@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/fiber": "^8.3.0",
     "@types/styled-components": "^5.1.25",
     "dat.gui": "^0.7.9",
     "detect-browser": "^5.3.0",
