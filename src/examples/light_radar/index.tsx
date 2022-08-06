@@ -1,15 +1,23 @@
-import React, { useEffect, useRef } from "react";
+import { extend } from "@react-three/fiber";
+import React, { useEffect, useMemo, useRef } from "react";
 import { LightRadar } from "./lib";
-
+import * as THREE from 'three'
 export default () => {
   const domRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (!domRef.current) {
-      return;
+ useMemo(()=>extend(THREE),[])
+  // useEffect(() => {
+  //   if (!domRef.current) {
+  //     return;
+  //   }
+  //   const spread = new LightRadar();
+  //   domRef.current.appendChild(spread.renderer.domElement);
+  //   spread.animate();
+  // }, []);
+ 
+  return <div ref={domRef}>
+    {
+     <mesh />
     }
-    const spread = new LightRadar();
-    domRef.current.appendChild(spread.renderer.domElement);
-    spread.animate();
-  }, []);
-  return <div ref={domRef}></div>;
+   
+  </div>;
 };
