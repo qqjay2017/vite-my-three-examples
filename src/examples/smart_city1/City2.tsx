@@ -12,6 +12,8 @@ import { addLightLine } from "./addLightLine";
 import { addToTopLine } from "./addToTopLine";
 import FlyLine from "./FlyLine";
 import FlyLineShader from "./FlyLineShader";
+import LightRadar from "./LightRadar";
+import LightWall from "./LightWall";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -94,6 +96,41 @@ export function City2(props: JSX.IntrinsicElements["group"]) {
       
         />
       </group>
+      <group name="LightRadar">
+        <LightRadar position={{
+          x:318,
+          y:77,
+          z:-279
+        }}
+        duration={1}
+        radius={30}/>
+         <LightRadar position={{
+          x:-307,
+          y:90,
+          z:-260
+        }}
+        color="#FF9800"
+        duration={1}
+        radius={20}/>
+      </group>
+      <group name="LightWall">
+        <LightWall position={{
+          x:100,
+          y:20,
+          z:100
+        }} 
+        length={5}
+        />
+         <LightWall position={{
+          x:-200,
+          y:50,
+          z:-200
+        }} 
+        height={50}
+        length={8}
+        duration={0.5}
+        />
+        </group>
     </group>
   );
 }
