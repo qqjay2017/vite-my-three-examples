@@ -23,6 +23,7 @@
     "react-icons": "^4.4.0",
     "react-responsive": "^9.0.0-beta.10",
     "react-router-dom": "^6.3.0",
+    "react-spinners": "^0.13.4",
     "resize-observer-polyfill": "^1.5.1",
     "styled-components": "^5.3.5",
     "three": "^0.143.0",

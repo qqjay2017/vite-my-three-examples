@@ -1,14 +1,16 @@
 import { Canvas } from "@react-three/fiber";
-import React, { Suspense, useEffect, useRef } from "react";
+import  { Suspense } from "react";
 // import { useControls } from "leva";
 import { City2 } from "./City2";
-import { Environment, OrbitControls, } from "@react-three/drei";
+import { Environment, Loader, OrbitControls, } from "@react-three/drei";
+
 function Model() {
 
  const handleClick = (e:any)=>{
     console.log(e);
  }
   return (
+    <>
     <Canvas  camera={{
       fov: 75,
       position: [723, 294, -300],
@@ -18,12 +20,15 @@ function Model() {
       <Suspense fallback={null}>
       <axesHelper args={[500]} />
         <City2 position={[0, 0, 0]} />
-        <OrbitControls enableDamping  />
+        <OrbitControls autoRotate enableDamping  />
 
         <Environment preset="sunset" />
        
       </Suspense>
     </Canvas>
+    // https://www.npmjs.com/package/@react-three/drei#usegltf
+    <Loader />
+    </>
   );
 }
 

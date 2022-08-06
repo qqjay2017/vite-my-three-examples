@@ -1,8 +1,8 @@
-import { CatmullRomLine } from "@react-three/drei";
+
 import React, { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import gsap from "gsap";
-import { useFrame, useLoader } from "@react-three/fiber";
+import { useLoader } from "@react-three/fiber";
 
 export interface IFlyLineProps {
   position:{x:number,y:number,z:number},
