@@ -22,7 +22,7 @@ function Model() {
         <City2 position={[0, 0, 0]} />
         <OrbitControls autoRotate enableDamping  />
 
-        <Environment preset="sunset" />
+        
        
       </Suspense>
     </Canvas>
