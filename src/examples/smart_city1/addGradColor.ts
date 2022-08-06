@@ -10,7 +10,7 @@ export function addGradColor(shader: THREE.Shader, mesh:THREE.Mesh<THREE.BufferG
     let uHeight = max.y - min.y;
   
     shader.uniforms.uTopColor = {
-      value: new THREE.Color("#aaaeff"),
+      value: new THREE.Color("#D1C4E9"),
     };
     shader.uniforms.uHeight = {
       value: uHeight,

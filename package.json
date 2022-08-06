@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/cannon": "^6.3.0",
     "@react-three/drei": "^9.19.6",
     "@react-three/fiber": "^8.3.0",
     "@types/styled-components": "^5.1.25",
