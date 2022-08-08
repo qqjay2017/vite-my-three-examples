@@ -126,7 +126,7 @@ const f =
         gl_FragColor = vec4(color, opacity);
           // 设置贴图
             vec2 uv = vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y);
-              gl_FragColor = gl_FragColor * texture2D(cubeTexture, uv);
+              gl_FragColor = vec4(255.0,0,0,1);
             }`;
 
 export class Model {
@@ -159,8 +159,8 @@ export class Model {
   shaderMaterial: THREE.ShaderMaterial = null!;
   constructor({ scene }: { scene: THREE.Scene }) {
     this.scene = scene;
-    this.width = 1500;
-    this.height = 1500;
+    this.width = 500;
+    this.height = 500;
   }
 
   init() {
@@ -177,10 +177,10 @@ export class Model {
         value: this.val,
       },
       prob: { value: 3 },
-      time: { value: 1000 },
+      time: { value: 999999 },
       explode: { value: 0 },
       gather: { value: 0 },
-      status: { value: 4 },
+      status: { value: 2 },
     };
     this.shaderMaterial = new THREE.ShaderMaterial({
       uniforms: uniforms,
