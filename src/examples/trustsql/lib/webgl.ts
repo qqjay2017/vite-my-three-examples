@@ -27,13 +27,13 @@ export class WebGl{
 
 
     init(){
-        // this.camera.fov = this.fov;
-        // this.camera.near = this.cameraZ - this.toZ;
-        // this.camera.far = this.cameraZ - this.fromZ;
-        // this.camera.position.set(0,0,this.cameraZ)
-        // this.camera.lookAt(0,0,0)
-        // this.renderer.setClearColor(0,0)
-        // this.renderer.setSize(window.innerWidth, window.innerHeight)
+        this.camera.fov = this.fov;
+        this.camera.near = this.cameraZ - this.toZ;
+        this.camera.far = this.cameraZ - this.fromZ;
+        this.camera.position.set(0,0,this.cameraZ)
+        this.camera.lookAt(0,0,0)
+        this.renderer.setClearColor(0,0)
+        this.renderer.setSize(window.innerWidth, window.innerHeight)
 
         //model
 
@@ -46,6 +46,9 @@ export class WebGl{
 
     }
     render(){
+        this.camera.updateProjectionMatrix();
+
+       
         this.renderer.render(this.scene,this.camera)
 
         
@@ -97,5 +100,9 @@ export class WebGl{
     onResize(){
 
     }
+    animate() {
+        requestAnimationFrame(this.animate.bind(this));
+        this.render();
+      }
 
 }

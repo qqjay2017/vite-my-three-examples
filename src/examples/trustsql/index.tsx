@@ -10,6 +10,7 @@ export default ()=>{
     const webGl = new WebGl()
     webGl.init()
     divRef.current?.appendChild(webGl.renderer.domElement)
+    webGl.animate()
   },[])
 
 
