@@ -31,7 +31,7 @@ const projection = d3
 // const COLOR_ARR = [0x3C6EAB, 0x2F75AC, '#0465BD', '#357bcb', '#408db3']
 // "#0465BD", "#357bcb"
 const COLOR_ARR = ["#357bcb"];
-const HIGHT_COLOR = "#4fa5ff";
+const HIGHT_COLOR = ["#87bfe4"];
 // @ts-ignore
 let csmHelper;
 const params = {
@@ -202,16 +202,23 @@ export class lineMap {
       let x = projectionRow[0];
       let y = projectionRow[1];
       // 创建三维点
-      pointsArray.push(new THREE.Vector3(x, -y, 0));
-      this.linePinots.push([x, -y, 0]);
+      pointsArray.push(new THREE.Vector3(x, -y, 2));
+      this.linePinots.push([x, -y, 2]);
     });
     // 放入多个点
     lineGeometry.setFromPoints(pointsArray);
 
     const lineMaterial = new THREE.LineBasicMaterial({
       color: color,
+
+      lineWidth: 5,
     });
+
+    // lineMaterial.resolution.set(window.innerWidth, window.innerHeight);
+    // THREE.Line3
+    //   THREE.LineSegments
     return new THREE.Line(lineGeometry, lineMaterial);
+    // return new THREE.Line(lineGeometry, lineMaterial);
   }
 
   initMap(chinaJson) {
@@ -236,7 +243,7 @@ export class lineMap {
           // 定一个省份3D对象
           const province = new THREE.Object3D();
           // 边界
-          //   const chinaLines = new THREE.Object3D();
+          const chinaLines = new THREE.Object3D();
           // 每个的 坐标 数组
           const coordinates = elem.geometry.coordinates;
           const color = COLOR_ARR[index % COLOR_ARR.length];
@@ -244,9 +251,7 @@ export class lineMap {
           coordinates.forEach((multiPolygon) => {
             multiPolygon.forEach((polygon) => {
               const shape = new THREE.Shape();
-              const line = _this.lineDraw(polygon, "#000");
-
-              //   chinaLines.add(line);
+              const line = _this.lineDraw(polygon, "#d7e2eb");
 
               for (let i = 0; i < polygon.length; i++) {
                 let [x, y] = projection(polygon[i]);
@@ -283,17 +288,37 @@ export class lineMap {
               });
 
               const material1 = new THREE.MeshStandardMaterial({
-                clearcoat: 3.0,
-                map: waterTexture,
-                metalness: 1,
-                roughness: 1,
-                color: color,
+                // clearcoat: 2.0,
+                // map: waterTexture,
+                metalness: 0.5,
+                roughness: 0.5,
+                color: "#1e375e",
               });
 
               const mesh = new THREE.Mesh(geometry, [material, material1]);
-              if (index % 2 === 0) {
-                mesh.scale.set(1, 1, 1.2);
+
+              if (index % 4 === 0) {
+                mesh.scale.set(1, 1, 0.9);
+                line.position.set(0, 0, 1.9);
               }
+              if (index % 4 === 1) {
+                mesh.scale.set(1, 1, 1.0);
+                line.position.set(0, 0, 2.0);
+              }
+              if (index % 4 === 2) {
+                mesh.scale.set(1, 1, 1.1);
+                line.position.set(0, 0, 2.1);
+              }
+              if (index % 4 === 3) {
+                mesh.scale.set(1, 1, 0.9);
+                line.position.set(0, 0, 2.0);
+              }
+              if (index % 4 === 4) {
+                mesh.scale.set(1, 1, 1.1);
+                line.position.set(0, 0, 2.1);
+              }
+
+              chinaLines.add(line);
 
               mesh.castShadow = true;
               mesh.receiveShadow = true;
@@ -308,9 +333,19 @@ export class lineMap {
             const [x, y] = projection(elem.properties.centorid);
             province.properties._centroid = [x, y];
           }
-
+          // const opacityGeometry = new THREE.BufferGeometry();
+          // const positions = new Float32Array(linePinots.flat(1));
+          // opacityGeometry.setAttribute(
+          //   "position",
+          //   new BufferAttribute(positions, 3)
+          // );
+          // const opacitys = new Float32Array(positions.length).map(() => 0);
+          //  opacityGeometry.setAttribute(
+          //    "aOpacity",
+          //    new BufferAttribute(opacitys, 1)
+          //  );
           _this.map.add(province);
-          //   _this.map.add(chinaLines);
+          _this.map.add(chinaLines);
           //    _this.map.add(province);
         });
 
