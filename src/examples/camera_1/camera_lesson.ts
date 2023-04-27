@@ -7,6 +7,8 @@ const size = 4;
 interface CameraLessonInstance
   extends ThreeInstanceBaseType<THREE.OrthographicCamera> {
   mesh: THREE.Mesh | null;
+  watcherCamera: THREE.PerspectiveCamera | null;
+  orthographicCamera: THREE.OrthographicCamera | null;
 }
 export const cameraLessonInstance: CameraLessonInstance = {
   canvas: null,
@@ -15,9 +17,11 @@ export const cameraLessonInstance: CameraLessonInstance = {
   scene: null,
   mesh: null,
   camera: null,
+  orthographicCamera: null,
   renderer: null,
   orbitControls: null,
   cameraHelper: null,
+  watcherCamera:null,
   init() {
     this.createScene();
     this.createLights();
@@ -63,27 +67,35 @@ export const cameraLessonInstance: CameraLessonInstance = {
     this.scene.add(axesHelper);
     const gridHelp = new THREE.GridHelper(100, 10, 0xcd37aa, 0x4a4a4a);
     this.scene.add(gridHelp);
-    if (this.camera) {
-      this.cameraHelper = new THREE.CameraHelper(this.camera);
+    if (this.orthographicCamera) {
+      this.cameraHelper = new THREE.CameraHelper(this.orthographicCamera);
       this.scene.add(this.cameraHelper);
     }
   },
   createCamera() {
     if (!this.scene) return;
-    const size = 4;
+    const size = 14;
     // this.camera = new THREE.PerspectiveCamera(-size, size, size / 2,-size/2,);
     // 正交相机
-    this.camera = new THREE.OrthographicCamera(
+    const orthographicCamera = new THREE.OrthographicCamera(
       -size,
       size,
-      size / 2,
-      -size / 2,
+      size ,
+      -size,
       0.0001,
-      100
+      10
     );
-    this.camera.position.set(1, 0.5, 2);
-    this.camera.lookAt(this.scene.position);
-    this.scene.add(this.camera);
+    orthographicCamera.position.set(1, 0.5, 2);
+    orthographicCamera.lookAt(this.scene.position);
+    this.orthographicCamera=orthographicCamera;
+    this.scene.add(orthographicCamera);
+    this.watcherCamera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight ,0.001,1000);
+    this.watcherCamera.position.set(6,6,16);
+    this.watcherCamera.lookAt(this.scene.position);
+    this.scene.add(this.watcherCamera)
+    this.camera = this.watcherCamera;
+
+
   },
   render() {
     if (!this.canvas || !this.scene || !this.camera) return;
@@ -148,22 +160,9 @@ export const cameraLessonInstance: CameraLessonInstance = {
         // TODO 切换相机类型还不行111
 
         if (_that.camera?.type === "OrthographicCamera") {
-          _that.camera = new THREE.PerspectiveCamera(
-            75,
-            window.innerWidth / window.innerHeight,
-            0.1,
-            100
-          );
+          _that.camera = _that.watcherCamera 
         } else {
-          _that.camera = new THREE.OrthographicCamera(
-            -size,
-            size,
-            size / 2,
-            -size / 2,
-
-            0.001,
-            10
-          );
+          _that.camera = _that.orthographicCamera 
         }
         // 新的的轨道控制器
         _that.orbitControls = new OrbitControls(_that.camera, _that.canvas!);
