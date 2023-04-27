@@ -1,12 +1,14 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import Stats from "three/examples/jsm/libs/stats.module";
 
-let camera: THREE.Camera,
+let camera: THREE.PerspectiveCamera,
   scene: THREE.Scene,
   renderer: THREE.WebGLRenderer,
   clock: THREE.Clock,
-  orbitControls: OrbitControls;
+  orbitControls: OrbitControls,
+  stats: Stats;
 export default () => {
   const init = () => {
     const canvas = document.getElementById("canvas")!;
@@ -37,8 +39,13 @@ export default () => {
       canvas,
     });
 
-    // 辅助
+    // 控制
     orbitControls = new OrbitControls(camera, canvas);
+    orbitControls.enableDamping = true;
+
+    stats = Stats();
+    stats.setMode(0);
+    document.body.appendChild(stats.domElement);
 
     renderer.setPixelRatio(window.devicePixelRatio || 1);
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -52,6 +59,7 @@ export default () => {
 
     // camera.lookAt(scene.position);
     orbitControls.update();
+    stats.update();
 
     renderer.render(scene, camera);
   };
@@ -59,6 +67,15 @@ export default () => {
   const animate = () => {
     requestAnimationFrame(animate);
     render();
+    const resizeHandle = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+    window.addEventListener("resize", resizeHandle);
+    () => {
+      window.removeEventListener("resize", resizeHandle);
+    };
   };
 
   useEffect(() => {
