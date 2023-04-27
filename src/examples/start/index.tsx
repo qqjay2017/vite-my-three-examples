@@ -8,7 +8,7 @@ let camera: THREE.PerspectiveCamera,
   renderer: THREE.WebGLRenderer,
   clock: THREE.Clock,
   orbitControls: OrbitControls,
-  stats: Stats;
+  stats: any;
 export default () => {
   const init = () => {
     const canvas = document.getElementById("canvas")!;
@@ -41,9 +41,13 @@ export default () => {
 
     // 控制
     orbitControls = new OrbitControls(camera, canvas);
+    // 惯性
     orbitControls.enableDamping = true;
+    orbitControls.enableZoom = false;
+    orbitControls.enablePan = false;
 
-    stats = Stats();
+    stats = new Stats();
+
     stats.setMode(0);
     document.body.appendChild(stats.domElement);
 
