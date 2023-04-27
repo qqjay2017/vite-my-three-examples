@@ -9,6 +9,6 @@ export function getRenderer() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  renderer.physicallyCorrectLights = true;
+  // renderer.physicallyCorrectLights = true;
   return renderer;
 }

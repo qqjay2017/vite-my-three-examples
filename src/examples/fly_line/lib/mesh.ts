@@ -29,7 +29,8 @@ export function addFlyLine(_params: AddSpreadFnProps) {
   
 ];
 const lineCurve = new THREE.CatmullRomCurve3(linePoints);
-const flyLine = new THREE.TubeBufferGeometry(lineCurve, 100, params.lineWidth, 2, false);
+
+const flyLine = new THREE.TubeGeometry(lineCurve, 100, params.lineWidth, 2, false);
 const z11Texture = new THREE.TextureLoader().load("./textures/z_11.png");
 z11Texture.repeat.set(1, 2);
 // 水平的重复

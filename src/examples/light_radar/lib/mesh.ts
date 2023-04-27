@@ -31,7 +31,7 @@ export function addLightRadar(_params: addLightRadarFnProps) {
   };
   const { scene, id, position, color, radius } = params;
 
-  const planeGeometry = new THREE.PlaneBufferGeometry(radius, radius);
+  const planeGeometry = new THREE.PlaneGeometry(radius, radius);
 
   const uTimeKey = `uTime_${id}`;
   const uColorKey = `uColor_${id}`;

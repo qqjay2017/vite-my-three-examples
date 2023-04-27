@@ -44,7 +44,7 @@ export function addFlyLine(_params: AddSpreadFnProps) {
   const lineCurve = new THREE.CatmullRomCurve3(linePoints,true);
   const points = lineCurve.getPoints(pointLength);
 
-  const flyLineGeometry = new THREE.TubeBufferGeometry().setFromPoints(points);
+  const flyLineGeometry = new THREE.TubeGeometry().setFromPoints(points);
   // 给每一个顶点设置属性
   const aSizeArray = new Float32Array(pointLength);
   for (let i = 0; i < pointLength; i++) {
