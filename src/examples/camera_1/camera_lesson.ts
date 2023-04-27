@@ -9,6 +9,7 @@ interface CameraLessonInstance
   mesh: THREE.Mesh | null;
   watcherCamera: THREE.PerspectiveCamera | null;
   orthographicCamera: THREE.OrthographicCamera | null;
+  intersectsBox:()=>boolean;
 }
 export const cameraLessonInstance: CameraLessonInstance = {
   canvas: null,
@@ -21,7 +22,7 @@ export const cameraLessonInstance: CameraLessonInstance = {
   renderer: null,
   orbitControls: null,
   cameraHelper: null,
-  watcherCamera:null,
+  watcherCamera: null,
   init() {
     this.createScene();
     this.createLights();
@@ -47,6 +48,59 @@ export const cameraLessonInstance: CameraLessonInstance = {
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
     this.scene?.add(ambientLight, directionalLight);
   },
+
+  createCamera() {
+    if (!this.scene) return;
+    const size = 14;
+    // this.camera = new THREE.PerspectiveCamera(-size, size, size / 2,-size/2,);
+    // 正交相机
+    const orthographicCamera = new THREE.OrthographicCamera(
+      -size,
+      size,
+      size,
+      -size,
+      0.0001,
+      10
+    );
+    orthographicCamera.position.set(1, 0.5, 2);
+    orthographicCamera.lookAt(this.scene.position);
+    this.orthographicCamera = orthographicCamera;
+    this.scene.add(orthographicCamera);
+    this.watcherCamera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.001,
+      1000
+    );
+    this.watcherCamera.position.set(6, 6, 16);
+    this.watcherCamera.lookAt(this.scene.position);
+    this.scene.add(this.watcherCamera);
+    this.camera = this.watcherCamera;
+    this.intersectsBox()
+   
+  },
+  intersectsBox(){
+    const intersectsCamera = this.orthographicCamera;
+    if (!this.scene||! this.camera||!intersectsCamera) return false;
+ 
+    if (this.mesh && this.mesh.geometry && this.mesh.geometry.boundingBox) {
+      const frustum = new THREE.Frustum();
+
+      intersectsCamera.updateProjectionMatrix();
+      // multiplyMatrices a 投影变换矩阵  b
+      frustum.setFromProjectionMatrix(
+        new THREE.Matrix4().multiplyMatrices(
+          intersectsCamera.projectionMatrix,
+          intersectsCamera.matrixWorldInverse
+        )
+      );
+      // 检测物体是否在相机内
+    const flag =   frustum.intersectsBox(this.mesh.geometry.boundingBox);
+    console.log('%ccamera_lesson.ts line:91 flag', 'color: #007acc;', flag);
+    return flag;
+    }
+    return false
+  },
   createObjects() {
     const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
     // MeshLambertMaterial 表面粗糙的材质，可以起镜面反射作用. 不适用于金属、玻璃等物体
@@ -57,6 +111,17 @@ export const cameraLessonInstance: CameraLessonInstance = {
         })
     );
     this.mesh = new THREE.Mesh(boxGeometry, faces);
+    console.log(
+      "%ccamera_lesson.ts line:86  this.mesh",
+      "color: #007acc;",
+      this.mesh
+    );
+    this.mesh.geometry.computeBoundingBox();
+    console.log(
+      "%ccamera_lesson.ts line:88  this.mesh.geometry",
+      "color: #007acc;",
+      this.mesh.geometry
+    );
     this.scene?.add(this.mesh);
   },
   helpers() {
@@ -71,31 +136,6 @@ export const cameraLessonInstance: CameraLessonInstance = {
       this.cameraHelper = new THREE.CameraHelper(this.orthographicCamera);
       this.scene.add(this.cameraHelper);
     }
-  },
-  createCamera() {
-    if (!this.scene) return;
-    const size = 14;
-    // this.camera = new THREE.PerspectiveCamera(-size, size, size / 2,-size/2,);
-    // 正交相机
-    const orthographicCamera = new THREE.OrthographicCamera(
-      -size,
-      size,
-      size ,
-      -size,
-      0.0001,
-      10
-    );
-    orthographicCamera.position.set(1, 0.5, 2);
-    orthographicCamera.lookAt(this.scene.position);
-    this.orthographicCamera=orthographicCamera;
-    this.scene.add(orthographicCamera);
-    this.watcherCamera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight ,0.001,1000);
-    this.watcherCamera.position.set(6,6,16);
-    this.watcherCamera.lookAt(this.scene.position);
-    this.scene.add(this.watcherCamera)
-    this.camera = this.watcherCamera;
-
-
   },
   render() {
     if (!this.canvas || !this.scene || !this.camera) return;
@@ -144,15 +184,16 @@ export const cameraLessonInstance: CameraLessonInstance = {
   },
   gui() {
     const _that = this;
-    if (!_that.camera || !_that.canvas) {
+    if (!_that.camera || !_that.canvas||!this.orthographicCamera) {
       return;
     }
 
     const gui = new dat.GUI();
+    const guiCamera = this.orthographicCamera;
     const params = {
       // 触发按钮事件(切换相机)
       switchCamera() {
-        if (!_that.camera || !_that.canvas) {
+        if (!guiCamera|| !_that.canvas) {
           return;
         }
         // 销毁旧的轨道控制器
@@ -160,12 +201,15 @@ export const cameraLessonInstance: CameraLessonInstance = {
         // TODO 切换相机类型还不行111
 
         if (_that.camera?.type === "OrthographicCamera") {
-          _that.camera = _that.watcherCamera 
+          _that.camera = _that.watcherCamera;
         } else {
-          _that.camera = _that.orthographicCamera 
+          _that.camera = _that.orthographicCamera;
         }
         // 新的的轨道控制器
-        _that.orbitControls = new OrbitControls(_that.camera, _that.canvas!);
+        _that.orbitControls = new OrbitControls(
+          _that.camera as any,
+          _that.canvas!
+        );
       },
     };
     gui.add(_that.camera.position, "x").min(-10).max(10).step(0.01);
@@ -179,13 +223,14 @@ export const cameraLessonInstance: CameraLessonInstance = {
         _that.cameraHelper?.update();
       });
     gui
-      .add(_that.camera, "near")
+      .add(guiCamera, "near")
       .min(0.001)
-      .max(4)
+      .max(20)
       .step(0.01)
-      .onChange(() => {
-        _that.camera?.updateProjectionMatrix();
-        _that.cameraHelper?.update();
+      .onChange((val) => {
+        guiCamera.near = val;
+        guiCamera?.updateProjectionMatrix();
+       const flag = this.intersectsBox();
       });
     gui
       .add(_that.camera, "far")
