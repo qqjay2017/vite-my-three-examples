@@ -6,9 +6,10 @@ export interface ThreeInstanceBaseType<C = THREE.OrthographicCamera> {
   width: number;
   height: number;
   scene: THREE.Scene | null;
-  camera: C | null;
+  camera: C | THREE.OrthographicCamera | THREE.PerspectiveCamera | null;
   renderer: THREE.WebGLRenderer | null;
   orbitControls: OrbitControls | null;
+  cameraHelper: THREE.CameraHelper | null;
   init: () => void;
   createScene: () => void;
   createLights: () => void;
@@ -19,4 +20,5 @@ export interface ThreeInstanceBaseType<C = THREE.OrthographicCamera> {
   controls: () => void;
   animate: () => void;
   fitView: () => void;
+  gui?: () => void;
 }

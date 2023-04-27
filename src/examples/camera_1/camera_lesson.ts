@@ -1,6 +1,9 @@
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import * as THREE from "three";
 import { ThreeInstanceBaseType } from "/@/lib-common/interface";
+import * as dat from "dat.gui";
+
+const size = 4;
 interface CameraLessonInstance
   extends ThreeInstanceBaseType<THREE.OrthographicCamera> {
   mesh: THREE.Mesh | null;
@@ -14,6 +17,7 @@ export const cameraLessonInstance: CameraLessonInstance = {
   camera: null,
   renderer: null,
   orbitControls: null,
+  cameraHelper: null,
   init() {
     this.createScene();
     this.createLights();
@@ -22,6 +26,7 @@ export const cameraLessonInstance: CameraLessonInstance = {
     this.helpers();
     this.render();
     this.controls();
+    this.gui?.();
     this.animate();
     this.fitView();
   },
@@ -51,10 +56,17 @@ export const cameraLessonInstance: CameraLessonInstance = {
     this.scene?.add(this.mesh);
   },
   helpers() {
+    if (!this.scene) {
+      return;
+    }
     const axesHelper = new THREE.AxesHelper(40);
-    this.scene?.add(axesHelper);
+    this.scene.add(axesHelper);
     const gridHelp = new THREE.GridHelper(100, 10, 0xcd37aa, 0x4a4a4a);
-    this.scene?.add(gridHelp);
+    this.scene.add(gridHelp);
+    if (this.camera) {
+      this.cameraHelper = new THREE.CameraHelper(this.camera);
+      this.scene.add(this.cameraHelper);
+    }
   },
   createCamera() {
     if (!this.scene) return;
@@ -85,6 +97,7 @@ export const cameraLessonInstance: CameraLessonInstance = {
   },
   controls() {
     if (!this.camera || !this.canvas) return;
+    // 轨道控制器
     const orbitControls = new OrbitControls(this.camera, this.canvas);
     orbitControls.enableDamping = true;
     this.orbitControls = orbitControls;
@@ -95,6 +108,7 @@ export const cameraLessonInstance: CameraLessonInstance = {
       return;
     }
     _that.orbitControls?.update();
+    _that.cameraHelper?.update();
     _that.renderer?.render(_that.scene, _that.camera);
 
     requestAnimationFrame(() => {
@@ -115,5 +129,75 @@ export const cameraLessonInstance: CameraLessonInstance = {
       },
       false
     );
+  },
+  gui() {
+    const _that = this;
+    if (!_that.camera || !_that.canvas) {
+      return;
+    }
+
+    const gui = new dat.GUI();
+    const params = {
+      // 触发按钮事件(切换相机)
+      switchCamera() {
+        if (!_that.camera || !_that.canvas) {
+          return;
+        }
+        // 销毁旧的轨道控制器
+        _that.orbitControls?.dispose();
+        // TODO 切换相机类型还不行111
+
+        if (_that.camera?.type === "OrthographicCamera") {
+          _that.camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            100
+          );
+        } else {
+          _that.camera = new THREE.OrthographicCamera(
+            -size,
+            size,
+            size / 2,
+            -size / 2,
+
+            0.001,
+            10
+          );
+        }
+        // 新的的轨道控制器
+        _that.orbitControls = new OrbitControls(_that.camera, _that.canvas!);
+      },
+    };
+    gui.add(_that.camera.position, "x").min(-10).max(10).step(0.01);
+    gui
+      .add(_that.camera, "zoom")
+      .min(0.1)
+      .max(4)
+      .step(0.1)
+      .onChange(() => {
+        _that.camera?.updateProjectionMatrix();
+        _that.cameraHelper?.update();
+      });
+    gui
+      .add(_that.camera, "near")
+      .min(0.001)
+      .max(4)
+      .step(0.01)
+      .onChange(() => {
+        _that.camera?.updateProjectionMatrix();
+        _that.cameraHelper?.update();
+      });
+    gui
+      .add(_that.camera, "far")
+      .min(0.1)
+      .max(40)
+      .step(0.1)
+      .onChange(() => {
+        _that.camera?.updateProjectionMatrix();
+        _that.cameraHelper?.update();
+      });
+    gui.add(params, "switchCamera");
+    // document.getElementById("root")!.appendChild(gui.domElement);
   },
 };
