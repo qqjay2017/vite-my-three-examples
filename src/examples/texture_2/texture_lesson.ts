@@ -14,7 +14,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
     }
 
     this.texture = this.textureLoader.load(
-      `/@/assets/Wood_Ceiling_Coffers_003/Wood_Ceiling_Coffers_003_basecolor.jpg`
+      `/@/assets/textures/Wood_Ceiling_Coffers_003/Wood_Ceiling_Coffers_003_basecolor.jpg`
     );
   }
 
@@ -31,17 +31,14 @@ export class TextureLessonInstance extends ThreeInstanceBase {
 
     this.scene?.add(this.mesh);
 
-    const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
+    const boxGeometry = new THREE.BoxGeometry(2, 2, 2);
     // 不同的面,不同的贴图
-    const boxtMaterial = boxGeometry.groups.map((g, index) => {
-      return new THREE.MeshLambertMaterial({
-        // color: 0xffffff * Math.random(),
-        map: this.textureLoader?.load(
-          `/@/assets/textures/fullscreen/0${index + 1}.jpg`
-        ),
-      });
+    const boxtMaterial = new THREE.MeshStandardMaterial({
+      // color: 0xffffff * Math.random(),
+      map: this.textureLoader?.load(
+        `/@/assets/textures/Wood_Ceiling_Coffers_003/Wood_Ceiling_Coffers_003_basecolor.jpg`
+      ),
     });
-
     const boxMesh = new THREE.Mesh(boxGeometry, boxtMaterial);
 
     boxMesh.position.set(3, 0, 0);

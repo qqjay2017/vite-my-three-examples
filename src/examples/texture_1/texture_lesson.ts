@@ -46,7 +46,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
 
     const loader = new THREE.TextureLoader(this.loadingManager);
     this.texture = loader.load(
-      `/@/assets/Wood_Ceiling_Coffers_003/Wood_Ceiling_Coffers_003_basecolor.jpg`
+      `/@/assets/textures/Wood_Ceiling_Coffers_003/Wood_Ceiling_Coffers_003_basecolor.jpg`
     );
   }
 
