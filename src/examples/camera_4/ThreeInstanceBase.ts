@@ -16,6 +16,7 @@ export class ThreeInstanceBase {
   dragControls: DragControls | null = null;
   cameraHelper: THREE.CameraHelper | null = null;
   loadingManager: THREE.LoadingManager | null = null;
+  textureLoader: THREE.TextureLoader | null = null;
 
   createScene() {
     this.scene = new THREE.Scene();
@@ -55,6 +56,7 @@ export class ThreeInstanceBase {
       console.log("There was an error loading " + url);
     };
     this.loadingManager = manager;
+    this.textureLoader = new THREE.TextureLoader(manager);
   }
   createLights(): void {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
@@ -71,7 +73,7 @@ export class ThreeInstanceBase {
       0.1,
       1000
     );
-    perspectiveCamera.position.set(2, 2, 4);
+    perspectiveCamera.position.set(12, 12, 14);
     perspectiveCamera.lookAt(this.scene.position);
     this.scene.add(perspectiveCamera);
     this.watcherCamera = perspectiveCamera;
