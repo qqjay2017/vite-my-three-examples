@@ -28,7 +28,16 @@ export class ThreeInstanceBase {
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
     this.scene?.add(ambientLight, directionalLight);
   }
-  createCamera() {}
+  createCamera() {
+    if (!this.scene) {
+      return;
+    }
+    const perspectiveCamera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
+    perspectiveCamera.position.set(2,2,4);
+    perspectiveCamera.lookAt(this.scene.position);
+    this.scene.add(perspectiveCamera)
+    this.watcherCamera = perspectiveCamera;
+  }
   createObjects() {}
 
   helpers(): void {
