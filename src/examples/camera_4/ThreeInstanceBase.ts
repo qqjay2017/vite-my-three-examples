@@ -15,6 +15,7 @@ export class ThreeInstanceBase {
   orbitControls: OrbitControls | null = null;
   dragControls: DragControls | null = null;
   cameraHelper: THREE.CameraHelper | null = null;
+  loadingManager: THREE.LoadingManager | null = null;
 
   createScene() {
     this.scene = new THREE.Scene();
@@ -23,19 +24,56 @@ export class ThreeInstanceBase {
     this.height = window.innerHeight;
     this.canvas = canvas;
   }
+  createLoadingManager(): void {
+    const manager = new THREE.LoadingManager();
+    manager.onStart = function (url, itemsLoaded, itemsTotal) {
+      console.log(
+        "Started loading file: " +
+          url +
+          ".\nLoaded " +
+          itemsLoaded +
+          " of " +
+          itemsTotal +
+          " files."
+      );
+    };
+    manager.onLoad = function () {
+      console.log("Loading complete!");
+    };
+    manager.onProgress = function (url, itemsLoaded, itemsTotal) {
+      console.log(
+        "Loading file: " +
+          url +
+          ".\nLoaded " +
+          itemsLoaded +
+          " of " +
+          itemsTotal +
+          " files."
+      );
+    };
+    manager.onError = function (url) {
+      console.log("There was an error loading " + url);
+    };
+    this.loadingManager = manager;
+  }
   createLights(): void {
-    const ambientLight = new THREE.AmbientLight(0xffffff);
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.1);
     this.scene?.add(ambientLight, directionalLight);
   }
   createCamera() {
     if (!this.scene) {
       return;
     }
-    const perspectiveCamera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
-    perspectiveCamera.position.set(2,2,4);
+    const perspectiveCamera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+    perspectiveCamera.position.set(2, 2, 4);
     perspectiveCamera.lookAt(this.scene.position);
-    this.scene.add(perspectiveCamera)
+    this.scene.add(perspectiveCamera);
     this.watcherCamera = perspectiveCamera;
   }
   createObjects() {}
@@ -52,12 +90,14 @@ export class ThreeInstanceBase {
 
   render(): void {
     if (!this.canvas || !this.scene || !this.watcherCamera) return;
-    this.renderer = new THREE.WebGLRenderer({
-      canvas: this.canvas,
-      antialias: true,
-    });
-    this.renderer.setPixelRatio(window.devicePixelRatio || 1);
-    this.renderer.setSize(this.width, this.height);
+    if (!this.renderer) {
+      this.renderer = new THREE.WebGLRenderer({
+        canvas: this.canvas,
+        antialias: true,
+      });
+      this.renderer.setPixelRatio(window.devicePixelRatio || 1);
+      this.renderer.setSize(this.width, this.height);
+    }
     this.renderer.render(this.scene, this.watcherCamera);
   }
   animate(): void {
