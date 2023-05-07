@@ -59,8 +59,8 @@ export class ThreeInstanceBase {
     this.textureLoader = new THREE.TextureLoader(manager);
   }
   createLights(): void {
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.1);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
     this.scene?.add(ambientLight, directionalLight);
   }
   createCamera() {
