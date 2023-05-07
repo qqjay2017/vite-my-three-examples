@@ -17,6 +17,7 @@ export class ThreeInstanceBase {
   cameraHelper: THREE.CameraHelper | null = null;
   loadingManager: THREE.LoadingManager | null = null;
   textureLoader: THREE.TextureLoader | null = null;
+  cubeTextureLoader: THREE.CubeTextureLoader | null = null;
 
   createScene() {
     this.scene = new THREE.Scene();
@@ -57,6 +58,7 @@ export class ThreeInstanceBase {
     };
     this.loadingManager = manager;
     this.textureLoader = new THREE.TextureLoader(manager);
+    this.cubeTextureLoader = new THREE.CubeTextureLoader(manager);
   }
   createLights(): void {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
