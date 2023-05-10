@@ -75,7 +75,7 @@ export class ThreeInstanceBase {
       0.1,
       1000
     );
-    perspectiveCamera.position.set(12, 12, 14);
+    perspectiveCamera.position.set(2, 2, 3);
     perspectiveCamera.lookAt(this.scene.position);
     this.scene.add(perspectiveCamera);
     this.watcherCamera = perspectiveCamera;
