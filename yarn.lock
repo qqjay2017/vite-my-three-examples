@@ -689,9 +689,9 @@
     cannon-es-debugger "^1.0.0"
 
 "@react-three/drei@^9.19.6":
-  version "9.66.6"
-  resolved "https://registry.npmmirror.com/@react-three/drei/-/drei-9.66.6.tgz#36650adf98ecf8653d1d3a6c7fa4c0373bed9942"
-  integrity sha512-AQzuzawov5375PT612a4G1bNHLf31QxcZmfVSCFt9p4PolBgHtvkQGA8IDiCJRkbYYrOH4tOymfQEU6+f5Nmuw==
+  version "9.66.3"
+  resolved "https://registry.npmmirror.com/@react-three/drei/-/drei-9.66.3.tgz#9bbdfe383a7743c314fe7890e11ae0e8595e5d29"
+  integrity sha512-rsWVcRdcXlowWrDAF0CnEvSl3c6h+gZ68akXDHxT6bzlW4K1PPgvLC2kNixaxDHylHveoasNqezg7fvuIwfo/Q==
   dependencies:
     "@babel/runtime" "^7.11.2"
     "@react-spring/three" "~9.6.1"
@@ -1049,9 +1049,9 @@
     lil-gui "~0.17.0"
 
 "@types/webxr@*":
-  version "0.5.2"
-  resolved "https://registry.npmmirror.com/@types/webxr/-/webxr-0.5.2.tgz#5d9627b0ffe223aa3b166de7112ac8a9460dc54f"
-  integrity sha512-szL74BnIcok9m7QwYtVmQ+EdIKwbjPANudfuvDrAF8Cljg9MKUlIoc1w5tjj9PMpeSH3U1Xnx//czQybJ0EfSw==
+  version "0.5.1"
+  resolved "https://registry.npmmirror.com/@types/webxr/-/webxr-0.5.1.tgz#4908349419104bd476a4252d04e4c3abb496748d"
+  integrity sha512-xlFXPfgJR5vIuDefhaHuUM9uUgvPaXB6GKdXy2gdEh8gBWQZ2ul24AJz3foUd8NNKlSTQuWYJpCb1/pL81m1KQ==
 
 "@use-gesture/core@10.2.26":
   version "10.2.26"
@@ -1141,9 +1141,9 @@ camera-controls@^2.3.1:
   integrity sha512-swhc87YVHf9te0glBI7Oa/QBgsSCL4ZxtoR4V3vE6l7mEebsYRNL8y7Y2m2E6MrT0UTphM1S7mQqs0Sp7QTZ2g==
 
 caniuse-lite@^1.0.30001449:
-  version "1.0.30001486"
-  resolved "https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001486.tgz#56a08885228edf62cbe1ac8980f2b5dae159997e"
-  integrity sha512-uv7/gXuHi10Whlj0pp5q/tsK/32J2QSqVRKQhs2j8VsDCjgyruAh/eEXHF822VqO9yT6iZKw3nRwZRSPBE9OQg==
+  version "1.0.30001485"
+  resolved "https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001485.tgz#026bb7319f1e483391872dc303a973d4f513f619"
+  integrity sha512-8aUpZ7sjhlOyiNsg+pgcrTTPUXKh+rg544QYHSvQErljVEKJzvkYkCR/hUFeeVoEfTToUtY9cUKNRC7+c45YkA==
 
 cannon-es-debugger@^1.0.0:
   version "1.0.0"
@@ -1520,9 +1520,9 @@ detect-browser@^5.3.0:
   integrity sha512-53rsFbGdwMwlF7qvCt0ypLM5V5/Mbl0szB7GPN8y9NCcbknYOeVVXdrXEq+90IwAfrrzt6Hd+u2E2ntakICU8w==
 
 detect-gpu@^5.0.14:
-  version "5.0.23"
-  resolved "https://registry.npmmirror.com/detect-gpu/-/detect-gpu-5.0.23.tgz#b1a36f24ce0e15c33bc2dcf08ab21b1a6f4b973b"
-  integrity sha512-16bbvNSuGxlznAj7XNW8/7M/EtPuWoSGk1X1EJCipQ/F5JQK6tWMdU2xVInXGTRUMKmsDtZg+trnZ/bj0Vt/EA==
+  version "5.0.22"
+  resolved "https://registry.npmmirror.com/detect-gpu/-/detect-gpu-5.0.22.tgz#c79308f63ed3a2e504acadbeec769084ef9eb950"
+  integrity sha512-834nIJlDrx+BJ+v7ubG2B5yFa1Snfa7ZV0XvpRdB0ShyZzynER7hzvmIKN9e4urDApA4no89S3xePz/1bhygyw==
   dependencies:
     webgl-constants "^1.1.1"
 
@@ -1532,9 +1532,9 @@ draco3d@^1.4.1:
   integrity sha512-+3NaRjWktb5r61ZFoDejlykPEFKT5N/LkbXsaddlw6xNSXBanUYpFc2AXXpbJDilPHazcSreU/DpQIaxfX0NfQ==
 
 electron-to-chromium@^1.4.284:
-  version "1.4.388"
-  resolved "https://registry.npmmirror.com/electron-to-chromium/-/electron-to-chromium-1.4.388.tgz#ec0d1be823d5b14da56d91ec5c57e84b4624ea45"
-  integrity sha512-xZ0y4zjWZgp65okzwwt00f2rYibkFPHUv9qBz+Vzn8cB9UXIo9Zc6Dw81LJYhhNt0G/vR1OJEfStZ49NKl0YxQ==
+  version "1.4.385"
+  resolved "https://registry.npmmirror.com/electron-to-chromium/-/electron-to-chromium-1.4.385.tgz#1afd8d6280d510145148777b899ff481c65531ff"
+  integrity sha512-L9zlje9bIw0h+CwPQumiuVlfMcV4boxRjFIWDcLfFqTZNbkwOExBzfmswytHawObQX4OUhtNv8gIiB21kOurIg==
 
 errno@^0.1.1:
   version "0.1.8"
@@ -2096,9 +2096,9 @@ robust-predicates@^3.0.0:
   integrity sha512-ndEIpszUHiG4HtDsQLeIuMvRsDnn8c8rYStabochtUeCvfuvNptb5TUbVD68LRAILPX7p9nqQGh4xJgn3EHS/g==
 
 rollup@^3.21.0:
-  version "3.21.6"
-  resolved "https://registry.npmmirror.com/rollup/-/rollup-3.21.6.tgz#f5649ccdf8fcc7729254faa457cbea9547eb86db"
-  integrity sha512-SXIICxvxQxR3D4dp/3LDHZIJPC8a4anKMHd4E3Jiz2/JnY+2bEjqrOokAauc5ShGVNFHlEFjBXAXlaxkJqIqSg==
+  version "3.21.5"
+  resolved "https://registry.npmmirror.com/rollup/-/rollup-3.21.5.tgz#1fbae43dc1079497b04604707f1cf979e51bfe49"
+  integrity sha512-a4NTKS4u9PusbUJcfF4IMxuqjFzjm6ifj76P54a7cKnvVzJaG12BLVR+hgU2YDGHzyMMQNxLAZWuALsn8q2oQg==
   optionalDependencies:
     fsevents "~2.3.2"
 
