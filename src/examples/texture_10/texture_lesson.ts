@@ -23,7 +23,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
     this.texture = this.textureLoader.load(
       `/@/assets/textures/Warning_Sign_HighVoltage_001/Warning_Sign_HighVoltage_001_basecolor.jpg`
     );
-    this.texture.magFilter = THREE.NearestFilter;
+    // this.texture.magFilter = THREE.NearestFilter;
   }
 
   createObjects(): void {
@@ -31,7 +31,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
       return;
     }
 
-    const boxGeometry = new THREE.BoxGeometry(4, 4, 4);
+    const boxGeometry = new THREE.SphereGeometry(0.5, 16, 64);
 
     const boxMesh = new THREE.Mesh(
       boxGeometry,
@@ -40,7 +40,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
       })
     );
 
-    boxMesh.position.set(5, 0, 0);
+    boxMesh.position.set(2, 0, 0);
 
     const aoTexture = this.textureLoader.load(
       `/@/assets/textures/Warning_Sign_HighVoltage_001/Warning_Sign_HighVoltage_001_ambientOcclusion.jpg`
@@ -57,7 +57,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
     const metalnessTexture = this.textureLoader.load(
       `/@/assets/textures/Warning_Sign_HighVoltage_001/Warning_Sign_HighVoltage_001_metallic.jpg`
     );
-    const boxGeometry1 = new THREE.BoxGeometry(4, 4, 4);
+    const boxGeometry1 = new THREE.SphereGeometry(0.5, 16, 64);
 
     this.mesh = new THREE.Mesh(
       boxGeometry1,
@@ -86,7 +86,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
       })
     );
 
-    this.mesh.position.set(-5, 1, 0);
+    this.mesh.position.set(-1, 0, 0);
 
     this.scene?.add(this.mesh, boxMesh);
   }
