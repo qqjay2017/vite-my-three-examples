@@ -1,0 +1,21 @@
+import { useEffect } from "react";
+import { MaterialLessonInstance } from "./material_lesson";
+// 具体texture_10
+export default () => {
+  useEffect(() => {
+    const cameraLessonInstance = new MaterialLessonInstance();
+    cameraLessonInstance.init();
+  }, []);
+
+  return (
+    <div>
+      <canvas
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+        id="c"
+      />
+    </div>
+  );
+};

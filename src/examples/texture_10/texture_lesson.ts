@@ -7,10 +7,11 @@ import { ThreeInstanceBase } from "../camera_4/ThreeInstanceBase";
 export class TextureLessonInstance extends ThreeInstanceBase {
   mesh: THREE.Mesh | null = null;
   texture: THREE.Texture | null = null;
+
   createLights(): void {
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(3, 3, 3);
+    directionalLight.position.set(5, 5, 2);
     this.scene?.add(ambientLight, directionalLight);
   }
   loadTextures() {
@@ -22,6 +23,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
     this.texture = this.textureLoader.load(
       `/@/assets/textures/Warning_Sign_HighVoltage_001/Warning_Sign_HighVoltage_001_basecolor.jpg`
     );
+    this.texture.magFilter = THREE.NearestFilter;
   }
 
   createObjects(): void {
@@ -39,6 +41,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
     );
 
     boxMesh.position.set(5, 0, 0);
+
     const aoTexture = this.textureLoader.load(
       `/@/assets/textures/Warning_Sign_HighVoltage_001/Warning_Sign_HighVoltage_001_ambientOcclusion.jpg`
     );
@@ -60,6 +63,16 @@ export class TextureLessonInstance extends ThreeInstanceBase {
       boxGeometry1,
       new THREE.MeshStandardMaterial({
         map: this.texture,
+        envMap: this.cubeTextureLoader?.load([
+          `/@/assets/textures/fullscreen/1.left.jpg`,
+          `/@/assets/textures/fullscreen/1.right.jpg`,
+          `/@/assets/textures/fullscreen/1.top.jpg`,
+          `/@/assets/textures/fullscreen/1.bottom.jpg`,
+          `/@/assets/textures/fullscreen/1.front.jpg`,
+          `/@/assets/textures/fullscreen/1.back.jpg`,
+        ]),
+        envMapIntensity: 1.0,
+
         bumpMap: displacementTexture,
         displacementMap: displacementTexture,
         displacementScale: 0,
@@ -68,12 +81,12 @@ export class TextureLessonInstance extends ThreeInstanceBase {
         roughnessMap: roughnessTexture,
         metalnessMap: metalnessTexture,
         metalness: 0,
-        roughness: 1,
+        roughness: 0,
         // normalScale: new THREE.Vector2(1, 1),
       })
     );
 
-    this.mesh.position.set(-5, 0, 0);
+    this.mesh.position.set(-5, 1, 0);
 
     this.scene?.add(this.mesh, boxMesh);
   }
@@ -99,6 +112,8 @@ export class TextureLessonInstance extends ThreeInstanceBase {
     gui.add(this.mesh.material as any, "metalness", 0, 1, 0.05);
     // .roughness : Float 材质的粗糙程度。0.0表示平滑的镜面反射，1.0表示完全漫反射。默认值为1.0。如果还提供
     gui.add(this.mesh.material as any, "roughness", 0, 1, 0.05);
+    // 环境贴图影响
+    gui.add(this.mesh.material as any, "envMapIntensity", 0, 1, 0.05);
   }
 
   init(): void {

@@ -60,7 +60,10 @@ const SidebarBody = styled.div`
   padding: ${sizeConstant.normalSpace};
   padding-right: 0;
   padding-bottom: 30px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
 `;
+const SidebarBodyInner = styled.div``;
 const LinkStyle = styled(Link)`
   text-decoration: none;
   position: relative;
@@ -135,13 +138,15 @@ function Sidebar({
         {open && <TitleText>three example</TitleText>}
       </Title>
       <SidebarBody>
-        {exampleRoutes.map((route, index) => {
-          return (
-            <CustomLink to={`/${route.path}`} key={index}>
-              <LinkTextStyle>{route.path}</LinkTextStyle>
-            </CustomLink>
-          );
-        })}
+        <SidebarBodyInner>
+          {exampleRoutes.map((route, index) => {
+            return (
+              <CustomLink to={`/${route.path}`} key={index}>
+                <LinkTextStyle>{route.path}</LinkTextStyle>
+              </CustomLink>
+            );
+          })}
+        </SidebarBodyInner>
       </SidebarBody>
       <SidebarFooter open={open}>
         {open ? (
