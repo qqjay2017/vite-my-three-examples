@@ -102,6 +102,7 @@ export class MaterialLessonInstance extends ThreeInstanceBase {
           (_that.material.color = new THREE.Color(val));
       });
     gui.add(this.material, "wireframe");
+    this.guiInstance = gui;
   }
 
   init(): void {

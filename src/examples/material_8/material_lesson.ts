@@ -3,6 +3,8 @@ import { DragControls } from "three/examples/jsm/controls/DragControls";
 import * as THREE from "three";
 import * as dat from "dat.gui";
 import { ThreeInstanceBase } from "../camera_4/ThreeInstanceBase";
+import { Wood_Ceiling_Coffers_003 } from "/@/assets/textures/Wood_Ceiling_Coffers_003";
+import { textturesMap } from "/@/assets/textures/textturesMap";
 
 export class MaterialLessonInstance extends ThreeInstanceBase {
   mesh: THREE.Mesh | null = null;
@@ -25,18 +27,14 @@ export class MaterialLessonInstance extends ThreeInstanceBase {
       return;
     }
     this.texture = this.textureLoader.load(
-      "/@/assets/textures/Wood_Ceiling_Coffers_003/Wood_Ceiling_Coffers_003_basecolor.jpg"
+      Wood_Ceiling_Coffers_003.Wood_Ceiling_Coffers_003_basecolor
     );
     this.normalTexture = this.textureLoader.load(
-      "/@/assets/textures/Wood_Ceiling_Coffers_003/Wood_Ceiling_Coffers_003_normal.jpg"
+      Wood_Ceiling_Coffers_003.Wood_Ceiling_Coffers_003_normal
     );
-    this.threeToneTexture = this.textureLoader.load(
-      "/@/assets/textures/threeTone.jpg"
-    );
+    this.threeToneTexture = this.textureLoader.load(textturesMap.threeTone);
     this.threeToneTexture.magFilter = THREE.NearestFilter;
-    this.fiveToneTexture = this.textureLoader.load(
-      "/@/assets/textures/fiveTone.jpg"
-    );
+    this.fiveToneTexture = this.textureLoader.load(textturesMap.fiveTone);
     // 当贴图像素远小于物体的时候,要设置magFilter算法
     this.fiveToneTexture.magFilter = THREE.NearestFilter;
   }
@@ -145,6 +143,7 @@ export class MaterialLessonInstance extends ThreeInstanceBase {
           _that.sphere.geometry = new THREE.SphereGeometry(0.5, 16, val);
         });
     }
+    this.guiInstance = gui;
   }
 
   init(): void {

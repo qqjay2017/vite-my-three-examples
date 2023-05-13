@@ -1,3 +1,4 @@
+import * as dat from "dat.gui";
 import * as THREE from "three";
 import { DragControls } from "three/examples/jsm/controls/DragControls";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
@@ -7,6 +8,7 @@ export class ThreeInstanceBase {
   width = window.innerWidth;
   height = window.innerHeight;
   scene: THREE.Scene | null = null;
+  guiInstance: dat.GUI | null = null;
 
   watcherCamera: THREE.OrthographicCamera | THREE.PerspectiveCamera | null =
     null;
@@ -147,4 +149,16 @@ export class ThreeInstanceBase {
   }
   gui() {}
   init() {}
+  dispose() {
+    if (this.guiInstance) {
+      this.guiInstance.destroy();
+    }
+    if (this.renderer) {
+      this.renderer.dispose();
+    }
+    Reflect.ownKeys(this).forEach((key) => {
+      const _key = String(key) as keyof ThreeInstanceBase;
+      (this[_key] as any) = null;
+    });
+  }
 }

@@ -3,6 +3,7 @@ import { DragControls } from "three/examples/jsm/controls/DragControls";
 import * as THREE from "three";
 
 import { ThreeInstanceBase } from "../camera_4/ThreeInstanceBase";
+import { textturesMap } from "/@/assets/textures/textturesMap";
 
 export class TextureLessonInstance extends ThreeInstanceBase {
   mesh: THREE.Mesh | null = null;
@@ -13,7 +14,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
       return;
     }
 
-    this.texture = this.textureLoader.load(`/@/assets/textures/sword.png`);
+    this.texture = this.textureLoader.load(textturesMap.sword);
   }
 
   createObjects(): void {
@@ -21,7 +22,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
       return;
     }
     const cylinderGeometry = new THREE.BoxGeometry(1, 1, 1);
-    const texture1 = this.textureLoader?.load(`/@/assets/textures/sword.png`);
+    const texture1 = this.textureLoader?.load(textturesMap.sword);
     console.log(
       "%ctexture_lesson.ts line:22 texture1",
       "color: #007acc;",
@@ -42,7 +43,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
     this.scene?.add(this.mesh);
 
     const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-    const texture2 = this.textureLoader?.load(`/@/assets/textures/sword.png`);
+    const texture2 = this.textureLoader?.load(textturesMap.sword);
     const boxtMaterial = boxGeometry.groups.map((g, index) => {
       return new THREE.MeshStandardMaterial({
         map: texture2,

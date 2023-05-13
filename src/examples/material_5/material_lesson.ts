@@ -3,6 +3,7 @@ import { DragControls } from "three/examples/jsm/controls/DragControls";
 import * as THREE from "three";
 import * as dat from "dat.gui";
 import { ThreeInstanceBase } from "../camera_4/ThreeInstanceBase";
+import { Wood_Ceiling_Coffers_003 } from "/@/assets/textures/Wood_Ceiling_Coffers_003";
 
 export class MaterialLessonInstance extends ThreeInstanceBase {
   mesh: THREE.Mesh | null = null;
@@ -22,10 +23,10 @@ export class MaterialLessonInstance extends ThreeInstanceBase {
       return;
     }
     this.texture = this.textureLoader.load(
-      "/@/assets/textures/Wood_Ceiling_Coffers_003/Wood_Ceiling_Coffers_003_basecolor.jpg"
+      Wood_Ceiling_Coffers_003.Wood_Ceiling_Coffers_003_basecolor
     );
     this.normalTexture = this.textureLoader.load(
-      "/@/assets/textures/Wood_Ceiling_Coffers_003/Wood_Ceiling_Coffers_003_normal.jpg"
+      Wood_Ceiling_Coffers_003.Wood_Ceiling_Coffers_003_normal
     );
   }
 
@@ -112,6 +113,7 @@ export class MaterialLessonInstance extends ThreeInstanceBase {
       lightFolder.add(_that.directionalLight.position, "y", -10, 10, 0.1);
       lightFolder.add(_that.directionalLight, "intensity", 0, 1, 0.05);
     }
+    this.guiInstance = gui;
   }
 
   init(): void {

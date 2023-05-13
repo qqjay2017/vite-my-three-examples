@@ -3,6 +3,7 @@ import { DragControls } from "three/examples/jsm/controls/DragControls";
 import * as THREE from "three";
 import * as dat from "dat.gui";
 import { ThreeInstanceBase } from "../camera_4/ThreeInstanceBase";
+import { earthTexture } from "/@/assets/textures/earth/earthTexture";
 
 export class TextureLessonInstance extends ThreeInstanceBase {
   mesh: THREE.Mesh | null = null;
@@ -19,9 +20,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
       return;
     }
 
-    this.texture = this.textureLoader.load(
-      `/@/assets/textures/earth/earth_atmos_2048.jpg`
-    );
+    this.texture = this.textureLoader.load(earthTexture.earth_atmos_2048);
   }
 
   createObjects(): void {
@@ -41,19 +40,19 @@ export class TextureLessonInstance extends ThreeInstanceBase {
     boxMesh.position.set(5, 0, 0);
 
     const envTexture = this.cubeTextureLoader.load([
-      `/@/assets/textures/earth/left.jpg`,
-      `/@/assets/textures/earth/right.jpg`,
-      `/@/assets/textures/earth/top.jpg`,
-      `/@/assets/textures/earth/bottom.jpg`,
-      `/@/assets/textures/earth/front.jpg`,
-      `/@/assets/textures/earth/back.jpg`,
+      earthTexture.left,
+      earthTexture.right,
+      earthTexture.top,
+      earthTexture.bottom,
+      earthTexture.front,
+      earthTexture.back,
     ]);
 
     const normalTexture = this.textureLoader.load(
-      `/@/assets/textures/earth/earth_normal_2048.jpg`
+      earthTexture.earth_normal_2048
     );
     const specularTexture = this.textureLoader.load(
-      `/@/assets/textures/earth/earth_specular_2048.jpg`
+      earthTexture.earth_specular_2048
     );
 
     const boxGeometry1 = new THREE.SphereGeometry(4, 64, 32);
@@ -102,6 +101,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
     // 环境贴图的强度
     gui.add(this.mesh.material as any, "shininess", 0, 100, 1);
     gui.addColor(this.mesh.material as any, "specular");
+    this.guiInstance = gui;
   }
 
   init(): void {

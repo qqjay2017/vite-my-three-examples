@@ -96,6 +96,7 @@ export class MaterialLessonInstance extends ThreeInstanceBase {
       lightFolder.add(_that.directionalLight.position, "y", -10, 10, 0.1);
       lightFolder.add(_that.directionalLight, "intensity", 0, 1, 0.05);
     }
+    this.guiInstance = gui;
   }
 
   init(): void {

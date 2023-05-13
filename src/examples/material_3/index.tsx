@@ -5,6 +5,9 @@ export default () => {
   useEffect(() => {
     const cameraLessonInstance = new MaterialLessonInstance();
     cameraLessonInstance.init();
+    return () => {
+      cameraLessonInstance.dispose();
+    };
   }, []);
 
   return (

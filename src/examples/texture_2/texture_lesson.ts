@@ -3,6 +3,7 @@ import { DragControls } from "three/examples/jsm/controls/DragControls";
 import * as THREE from "three";
 
 import { ThreeInstanceBase } from "../camera_4/ThreeInstanceBase";
+import { Wood_Ceiling_Coffers_003 } from "/@/assets/textures/Wood_Ceiling_Coffers_003";
 
 export class TextureLessonInstance extends ThreeInstanceBase {
   mesh: THREE.Mesh | null = null;
@@ -14,7 +15,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
     }
 
     this.texture = this.textureLoader.load(
-      `/@/assets/textures/Wood_Ceiling_Coffers_003/Wood_Ceiling_Coffers_003_basecolor.jpg`
+      Wood_Ceiling_Coffers_003.Wood_Ceiling_Coffers_003_basecolor
     );
   }
 
@@ -29,14 +30,12 @@ export class TextureLessonInstance extends ThreeInstanceBase {
       })
     );
 
-    this.scene?.add(this.mesh);
-
     const boxGeometry = new THREE.BoxGeometry(2, 2, 2);
     // 不同的面,不同的贴图
     const boxtMaterial = new THREE.MeshStandardMaterial({
       // color: 0xffffff * Math.random(),
       map: this.textureLoader?.load(
-        `/@/assets/textures/Wood_Ceiling_Coffers_003/Wood_Ceiling_Coffers_003_basecolor.jpg`
+        Wood_Ceiling_Coffers_003.Wood_Ceiling_Coffers_003_basecolor
       ),
     });
     const boxMesh = new THREE.Mesh(boxGeometry, boxtMaterial);

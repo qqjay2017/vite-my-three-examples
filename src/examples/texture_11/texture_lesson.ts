@@ -3,6 +3,8 @@ import { DragControls } from "three/examples/jsm/controls/DragControls";
 import * as THREE from "three";
 import * as dat from "dat.gui";
 import { ThreeInstanceBase } from "../camera_4/ThreeInstanceBase";
+import { Warning_Sign_HighVoltage_001 } from "/@/assets/textures/Warning_Sign_HighVoltage_001";
+import { fullscreen } from "/@/assets/textures/fullscreen";
 
 export class TextureLessonInstance extends ThreeInstanceBase {
   mesh: THREE.Mesh | null = null;
@@ -20,7 +22,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
     }
 
     this.texture = this.textureLoader.load(
-      `/@/assets/textures/Warning_Sign_HighVoltage_001/Warning_Sign_HighVoltage_001_basecolor.jpg`
+      Warning_Sign_HighVoltage_001.Warning_Sign_HighVoltage_001_basecolor
     );
   }
 
@@ -41,27 +43,27 @@ export class TextureLessonInstance extends ThreeInstanceBase {
     boxMesh.position.set(5, 0, 0);
 
     const envTexture = this.cubeTextureLoader.load([
-      `/@/assets/textures/fullscreen/1.left.jpg`,
-      `/@/assets/textures/fullscreen/1.right.jpg`,
-      `/@/assets/textures/fullscreen/1.top.jpg`,
-      `/@/assets/textures/fullscreen/1.bottom.jpg`,
-      `/@/assets/textures/fullscreen/1.front.jpg`,
-      `/@/assets/textures/fullscreen/1.back.jpg`,
+      fullscreen.left1,
+      fullscreen.right1,
+      fullscreen.top1,
+      fullscreen.bottom1,
+      fullscreen.front1,
+      fullscreen.back1,
     ]);
     const aoTexture = this.textureLoader.load(
-      `/@/assets/textures/Warning_Sign_HighVoltage_001/Warning_Sign_HighVoltage_001_ambientOcclusion.jpg`
+      Warning_Sign_HighVoltage_001.Warning_Sign_HighVoltage_001_ambientOcclusion
     );
     const displacementTexture = this.textureLoader.load(
-      `/@/assets/textures/Warning_Sign_HighVoltage_001/Warning_Sign_HighVoltage_001_height.png`
+      Warning_Sign_HighVoltage_001.Warning_Sign_HighVoltage_001_height
     );
     const normalTexture = this.textureLoader.load(
-      `/@/assets/textures/Warning_Sign_HighVoltage_001/Warning_Sign_HighVoltage_001_normal.jpg`
+      Warning_Sign_HighVoltage_001.Warning_Sign_HighVoltage_001_normal
     );
     const roughnessTexture = this.textureLoader.load(
-      `/@/assets/textures/Warning_Sign_HighVoltage_001/Warning_Sign_HighVoltage_001_metallic.jpg`
+      Warning_Sign_HighVoltage_001.Warning_Sign_HighVoltage_001_metallic
     );
     const metalnessTexture = this.textureLoader.load(
-      `/@/assets/textures/Warning_Sign_HighVoltage_001/Warning_Sign_HighVoltage_001_metallic.jpg`
+      Warning_Sign_HighVoltage_001.Warning_Sign_HighVoltage_001_metallic
     );
     const boxGeometry1 = new THREE.SphereGeometry(4, 64, 32);
 
@@ -111,6 +113,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
     gui.add(this.mesh.material as any, "roughness", 0, 1, 0.05);
     // 环境贴图的强度
     gui.add(this.mesh.material as any, "envMapIntensity", 0, 2, 0.05);
+    this.guiInstance = gui;
   }
 
   init(): void {

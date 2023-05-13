@@ -3,6 +3,7 @@ import { DragControls } from "three/examples/jsm/controls/DragControls";
 import * as THREE from "three";
 
 import { ThreeInstanceBase } from "../camera_4/ThreeInstanceBase";
+import { Wood_Ceiling_Coffers_003 } from "/@/assets/textures/Wood_Ceiling_Coffers_003";
 
 export class TextureLessonInstance extends ThreeInstanceBase {
   mesh: THREE.Mesh | null = null;
@@ -46,7 +47,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
 
     const loader = new THREE.TextureLoader(this.loadingManager);
     this.texture = loader.load(
-      `/@/assets/textures/Wood_Ceiling_Coffers_003/Wood_Ceiling_Coffers_003_basecolor.jpg`
+      Wood_Ceiling_Coffers_003.Wood_Ceiling_Coffers_003_basecolor
     );
   }
 

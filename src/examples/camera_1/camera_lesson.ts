@@ -9,7 +9,8 @@ interface CameraLessonInstance
   mesh: THREE.Mesh | null;
   watcherCamera: THREE.PerspectiveCamera | null;
   orthographicCamera: THREE.OrthographicCamera | null;
-  intersectsBox:()=>boolean;
+  intersectsBox: () => boolean;
+  guiInstance: dat.GUI | null;
 }
 export const cameraLessonInstance: CameraLessonInstance = {
   canvas: null,
@@ -23,6 +24,7 @@ export const cameraLessonInstance: CameraLessonInstance = {
   orbitControls: null,
   cameraHelper: null,
   watcherCamera: null,
+  guiInstance: null,
   init() {
     this.createScene();
     this.createLights();
@@ -76,13 +78,12 @@ export const cameraLessonInstance: CameraLessonInstance = {
     this.watcherCamera.lookAt(this.scene.position);
     this.scene.add(this.watcherCamera);
     this.camera = this.watcherCamera;
-    this.intersectsBox()
-   
+    this.intersectsBox();
   },
-  intersectsBox(){
+  intersectsBox() {
     const intersectsCamera = this.orthographicCamera;
-    if (!this.scene||! this.camera||!intersectsCamera) return false;
- 
+    if (!this.scene || !this.camera || !intersectsCamera) return false;
+
     if (this.mesh && this.mesh.geometry && this.mesh.geometry.boundingBox) {
       const frustum = new THREE.Frustum();
 
@@ -95,11 +96,11 @@ export const cameraLessonInstance: CameraLessonInstance = {
         )
       );
       // 检测物体是否在相机内
-    const flag =   frustum.intersectsBox(this.mesh.geometry.boundingBox);
-    console.log('%ccamera_lesson.ts line:91 flag', 'color: #007acc;', flag);
-    return flag;
+      const flag = frustum.intersectsBox(this.mesh.geometry.boundingBox);
+      console.log("%ccamera_lesson.ts line:91 flag", "color: #007acc;", flag);
+      return flag;
     }
-    return false
+    return false;
   },
   createObjects() {
     const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
@@ -184,16 +185,17 @@ export const cameraLessonInstance: CameraLessonInstance = {
   },
   gui() {
     const _that = this;
-    if (!_that.camera || !_that.canvas||!this.orthographicCamera) {
+    if (!_that.camera || !_that.canvas || !this.orthographicCamera) {
       return;
     }
 
     const gui = new dat.GUI();
+
     const guiCamera = this.orthographicCamera;
     const params = {
       // 触发按钮事件(切换相机)
       switchCamera() {
-        if (!guiCamera|| !_that.canvas) {
+        if (!guiCamera || !_that.canvas) {
           return;
         }
         // 销毁旧的轨道控制器
@@ -230,7 +232,7 @@ export const cameraLessonInstance: CameraLessonInstance = {
       .onChange((val) => {
         guiCamera.near = val;
         guiCamera?.updateProjectionMatrix();
-       const flag = this.intersectsBox();
+        const flag = this.intersectsBox();
       });
     gui
       .add(_that.camera, "far")
@@ -243,5 +245,6 @@ export const cameraLessonInstance: CameraLessonInstance = {
       });
     gui.add(params, "switchCamera");
     // document.getElementById("root")!.appendChild(gui.domElement);
+    this.guiInstance = gui;
   },
 };

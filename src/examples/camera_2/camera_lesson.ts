@@ -163,8 +163,6 @@ export const cameraLessonInstance: CameraLessonInstance = {
   gui() {
     const _that = this;
 
-    const gui = new dat.GUI();
-
     // gui.add(_that.camera.position, "x").min(-10).max(10).step(0.01);
     // gui
     //   .add(_that.camera, "zoom")

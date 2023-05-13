@@ -3,7 +3,8 @@ import { DragControls } from "three/examples/jsm/controls/DragControls";
 import * as THREE from "three";
 import * as dat from "dat.gui";
 import { ThreeInstanceBase } from "../camera_4/ThreeInstanceBase";
-
+import { Warning_Sign_HighVoltage_001 } from "/@/assets/textures/Warning_Sign_HighVoltage_001";
+import { fullscreen } from "/@/assets/textures/fullscreen";
 export class TextureLessonInstance extends ThreeInstanceBase {
   mesh: THREE.Mesh | null = null;
   texture: THREE.Texture | null = null;
@@ -21,7 +22,7 @@ export class TextureLessonInstance extends ThreeInstanceBase {
     }
 
     this.texture = this.textureLoader.load(
-      `/@/assets/textures/Warning_Sign_HighVoltage_001/Warning_Sign_HighVoltage_001_basecolor.jpg`
+      Warning_Sign_HighVoltage_001.Warning_Sign_HighVoltage_001_basecolor
     );
     // this.texture.magFilter = THREE.NearestFilter;
   }
@@ -40,22 +41,22 @@ export class TextureLessonInstance extends ThreeInstanceBase {
       })
     );
 
-    boxMesh.position.set(2, 0, 0);
+    boxMesh.position.set(1, 0, 0);
 
     const aoTexture = this.textureLoader.load(
-      `/@/assets/textures/Warning_Sign_HighVoltage_001/Warning_Sign_HighVoltage_001_ambientOcclusion.jpg`
+      Warning_Sign_HighVoltage_001.Warning_Sign_HighVoltage_001_ambientOcclusion
     );
     const displacementTexture = this.textureLoader.load(
-      `/@/assets/textures/Warning_Sign_HighVoltage_001/Warning_Sign_HighVoltage_001_height.png`
+      Warning_Sign_HighVoltage_001.Warning_Sign_HighVoltage_001_height
     );
     const normalTexture = this.textureLoader.load(
-      `/@/assets/textures/Warning_Sign_HighVoltage_001/Warning_Sign_HighVoltage_001_normal.jpg`
+      Warning_Sign_HighVoltage_001.Warning_Sign_HighVoltage_001_normal
     );
     const roughnessTexture = this.textureLoader.load(
-      `/@/assets/textures/Warning_Sign_HighVoltage_001/Warning_Sign_HighVoltage_001_metallic.jpg`
+      Warning_Sign_HighVoltage_001.Warning_Sign_HighVoltage_001_metallic
     );
     const metalnessTexture = this.textureLoader.load(
-      `/@/assets/textures/Warning_Sign_HighVoltage_001/Warning_Sign_HighVoltage_001_metallic.jpg`
+      Warning_Sign_HighVoltage_001.Warning_Sign_HighVoltage_001_metallic
     );
     const boxGeometry1 = new THREE.SphereGeometry(0.5, 16, 64);
 
@@ -64,12 +65,12 @@ export class TextureLessonInstance extends ThreeInstanceBase {
       new THREE.MeshStandardMaterial({
         map: this.texture,
         envMap: this.cubeTextureLoader?.load([
-          `/@/assets/textures/fullscreen/1.left.jpg`,
-          `/@/assets/textures/fullscreen/1.right.jpg`,
-          `/@/assets/textures/fullscreen/1.top.jpg`,
-          `/@/assets/textures/fullscreen/1.bottom.jpg`,
-          `/@/assets/textures/fullscreen/1.front.jpg`,
-          `/@/assets/textures/fullscreen/1.back.jpg`,
+          fullscreen.left1,
+          fullscreen.right1,
+          fullscreen.top1,
+          fullscreen.bottom1,
+          fullscreen.front1,
+          fullscreen.back1,
         ]),
         envMapIntensity: 1.0,
 
@@ -108,12 +109,14 @@ export class TextureLessonInstance extends ThreeInstanceBase {
       return;
     }
     const gui = new dat.GUI();
+
     //  .metalness : Float 材质与金属的相似度。非金属材质，如木材或石材，使用0.0，金属使用1.0，
     gui.add(this.mesh.material as any, "metalness", 0, 1, 0.05);
     // .roughness : Float 材质的粗糙程度。0.0表示平滑的镜面反射，1.0表示完全漫反射。默认值为1.0。如果还提供
     gui.add(this.mesh.material as any, "roughness", 0, 1, 0.05);
     // 环境贴图影响
     gui.add(this.mesh.material as any, "envMapIntensity", 0, 1, 0.05);
+    this.guiInstance = gui;
   }
 
   init(): void {
