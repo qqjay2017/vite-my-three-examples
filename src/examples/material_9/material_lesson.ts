@@ -37,7 +37,8 @@ export class MaterialLessonInstance extends ThreeInstanceBase {
     const boxMesh = new THREE.Mesh(
       boxGeometry,
       new THREE.MeshStandardMaterial({
-        map: this.texture,
+        // map: this.texture,
+        color: 0x049ef4,
       })
     );
 
@@ -62,8 +63,8 @@ export class MaterialLessonInstance extends ThreeInstanceBase {
 
     this.mesh = new THREE.Mesh(
       boxGeometry1,
-      new THREE.MeshStandardMaterial({
-        map: this.texture,
+      new THREE.MeshPhysicalMaterial({
+        // map: this.texture,
         envMap: this.cubeTextureLoader?.load([
           fullscreen.left1,
           fullscreen.right1,
@@ -72,17 +73,34 @@ export class MaterialLessonInstance extends ThreeInstanceBase {
           fullscreen.front1,
           fullscreen.back1,
         ]),
-        envMapIntensity: 1.0,
+        // envMapIntensity: 1.0,
+        // bumpMap: displacementTexture,
+        // displacementMap: displacementTexture,
+        // displacementScale: 0,
+        // / normalMap: normalTexture,
+        // aoMap: aoTexture,
+        // roughnessMap: roughnessTexture,
+        // metalnessMap: metalnessTexture,
+        color: 0x049ef4,
+        emissive: 0x000000,
 
-        bumpMap: displacementTexture,
-        displacementMap: displacementTexture,
-        displacementScale: 0,
-        normalMap: normalTexture,
-        aoMap: aoTexture,
-        roughnessMap: roughnessTexture,
-        metalnessMap: metalnessTexture,
         metalness: 0,
-        roughness: 0,
+        roughness: 1,
+        // 独有的特性,
+
+        reflectivity: 0.5,
+        // 具有反光特性 ,放射率
+        clearcoat: 0.16,
+        clearcoatRoughness: 0,
+        fog: true,
+
+        //         .ior : Float  为非金属材质所设置的折射率，范围由1.0到2.333。默认为1.5。
+        ior: 1.0,
+        // 曲面下体积的厚度
+        thickness: 1.0,
+
+        // 球体的厚薄程度
+        transmission: 0.8,
         // normalScale: new THREE.Vector2(1, 1),
       })
     );
@@ -116,6 +134,10 @@ export class MaterialLessonInstance extends ThreeInstanceBase {
     gui.add(this.mesh.material as any, "roughness", 0, 1, 0.05);
     // 环境贴图影响
     gui.add(this.mesh.material as any, "envMapIntensity", 0, 1, 0.05);
+    gui.add(this.mesh.material as any, "clearcoat", 0, 1, 0.05);
+    gui.add(this.mesh.material as any, "transmission", 0, 1, 0.05);
+    gui.add(this.mesh.material as any, "reflectivity", 0, 1, 0.05);
+    gui.add(this.mesh.material as any, "ior", 1, 2.333, 0.05);
     this.guiInstance = gui;
   }
 
