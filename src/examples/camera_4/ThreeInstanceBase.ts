@@ -101,10 +101,12 @@ export class ThreeInstanceBase {
         canvas: this.canvas,
         antialias: true,
       });
+      this.renderer.shadowMap.enabled = true;
       // this.renderer.outputColorSpace = THREE.SRGBColorSpace;
       this.renderer.setPixelRatio(window.devicePixelRatio || 1);
       this.renderer.setSize(this.width, this.height);
     }
+
     this.renderer.render(this.scene, this.watcherCamera);
   }
   animate(): void {
