@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { Suspense, useRef, useState } from "react";
 import { Canvas, MeshProps, useFrame, useLoader } from "@react-three/fiber";
 import * as THREE from "three";
 import { useControls } from "leva";
@@ -50,28 +50,30 @@ export default () => {
   const [bad, set] = useState(false);
 
   return (
-    <Canvas shadows camera={{ position: [5, 2, 10], fov: 50 }}>
-      <Perf position="top-left" />
-      <PerformanceMonitor onDecline={() => set(true)} />
-      {enabled && (
-        <SoftShadows
-          {...config}
-          samples={bad ? Math.min(6, samples) : samples}
-        />
-      )}
-      <CameraControls makeDefault />
-      <color attach="background" args={["#d0d0d0"]} />
-      <fog attach="fog" args={["#d0d0d0", 8, 35]} />
-      <ambientLight intensity={intensity} />
-      <Light />
-      <ShadowPlane />
+    <Suspense fallback={<span>loading...</span>}>
+      <Canvas shadows camera={{ position: [5, 2, 10], fov: 50 }}>
+        <Perf position="top-left" />
+        <PerformanceMonitor onDecline={() => set(true)} />
+        {enabled && (
+          <SoftShadows
+            {...config}
+            samples={bad ? Math.min(6, samples) : samples}
+          />
+        )}
+        <CameraControls makeDefault />
+        <color attach="background" args={["#d0d0d0"]} />
+        <fog attach="fog" args={["#d0d0d0", 8, 35]} />
+        <ambientLight intensity={intensity} />
+        <Light />
+        <ShadowPlane />
 
-      <Box position={[-1, 1, 1]} />
-      <Box position={[1, 1, 1]} />
-      <Sphere />
-      <Sphere position={[2, 4, -8]} scale={0.9} />
-      <Sphere position={[-2, 2, -8]} scale={0.8} />
-      <Sky inclination={0.52} />
-    </Canvas>
+        <Box position={[-1, 1, 1]} />
+        <Box position={[1, 1, 1]} />
+        <Sphere />
+        <Sphere position={[2, 4, -8]} scale={0.9} />
+        <Sphere position={[-2, 2, -8]} scale={0.8} />
+        <Sky inclination={0.52} />
+      </Canvas>
+    </Suspense>
   );
 };
