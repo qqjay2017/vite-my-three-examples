@@ -1,10 +1,13 @@
+import { useHelper } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { easing } from "maath";
 import { useRef } from "react";
-import { Group } from "three";
+import { Group, DirectionalLightHelper } from "three";
 
 export function Light() {
   const ref = useRef<Group>(null!);
+  const directionalLightRef = useRef<THREE.DirectionalLight>(null!);
+  useHelper(directionalLightRef, DirectionalLightHelper);
   useFrame((state, delta) => {
     easing.dampE(
       ref.current.rotation,
@@ -16,7 +19,8 @@ export function Light() {
   return (
     <group ref={ref}>
       <directionalLight
-        position={[5, 5, -8]}
+        ref={directionalLightRef}
+        position={[5, 5, 5]}
         castShadow
         intensity={5}
         shadow-mapSize={2048}
