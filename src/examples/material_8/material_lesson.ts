@@ -24,6 +24,8 @@ export class MaterialLessonInstance extends ThreeInstanceBase {
     this.texture = this.textureLoader.load(
       Warning_Sign_HighVoltage_001.Warning_Sign_HighVoltage_001_basecolor
     );
+    this.texture.colorSpace = THREE.SRGBColorSpace;
+
     // this.texture.magFilter = THREE.NearestFilter;
   }
 
@@ -59,33 +61,31 @@ export class MaterialLessonInstance extends ThreeInstanceBase {
       Warning_Sign_HighVoltage_001.Warning_Sign_HighVoltage_001_metallic
     );
     const boxGeometry1 = new THREE.SphereGeometry(0.5, 16, 64);
+    const standardMaterial = new THREE.MeshStandardMaterial({
+      map: this.texture,
+      envMap: this.cubeTextureLoader?.load([
+        fullscreen.left1,
+        fullscreen.right1,
+        fullscreen.top1,
+        fullscreen.bottom1,
+        fullscreen.front1,
+        fullscreen.back1,
+      ]),
+      envMapIntensity: 1.0,
 
-    this.mesh = new THREE.Mesh(
-      boxGeometry1,
-      new THREE.MeshStandardMaterial({
-        map: this.texture,
-        envMap: this.cubeTextureLoader?.load([
-          fullscreen.left1,
-          fullscreen.right1,
-          fullscreen.top1,
-          fullscreen.bottom1,
-          fullscreen.front1,
-          fullscreen.back1,
-        ]),
-        envMapIntensity: 1.0,
+      bumpMap: displacementTexture,
+      displacementMap: displacementTexture,
+      displacementScale: 0,
+      normalMap: normalTexture,
+      aoMap: aoTexture,
+      roughnessMap: roughnessTexture,
+      metalnessMap: metalnessTexture,
+      metalness: 0,
+      roughness: 0,
+      // normalScale: new THREE.Vector2(1, 1),
+    });
 
-        bumpMap: displacementTexture,
-        displacementMap: displacementTexture,
-        displacementScale: 0,
-        normalMap: normalTexture,
-        aoMap: aoTexture,
-        roughnessMap: roughnessTexture,
-        metalnessMap: metalnessTexture,
-        metalness: 0,
-        roughness: 0,
-        // normalScale: new THREE.Vector2(1, 1),
-      })
-    );
+    this.mesh = new THREE.Mesh(boxGeometry1, standardMaterial);
 
     this.mesh.position.set(-1, 0, 0);
 
