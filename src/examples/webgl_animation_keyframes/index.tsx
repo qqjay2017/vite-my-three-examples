@@ -3,6 +3,7 @@ import { Canvas, useThree, useLoader } from "@react-three/fiber";
 
 import * as THREE from "three";
 import { LittlestTokyo } from "./LittlestTokyo";
+import { Suspense } from "react";
 
 export default () => {
   // const pmremGenerator = new THREE.PMREMGenerator(gl)
@@ -20,12 +21,10 @@ export default () => {
           position: [5, 2, 8],
         }}
       >
-        {/* <Environment
-          files="https://cdn.jsdelivr.net/gh/Sean-Bradley/React-Three-Fiber-Boilerplate@useGLTF/public/img/workshop_1k.hdr"
-          background
-        /> */}
         <OrbitControls target={[0, 0.5, 0]} enablePan={false} enableDamping />
-        <LittlestTokyo />
+        <Suspense fallback={null}>
+          <LittlestTokyo />
+        </Suspense>
       </Canvas>
     </div>
   );

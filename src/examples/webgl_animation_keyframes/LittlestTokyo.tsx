@@ -1,18 +1,29 @@
-import React from "react";
-
 import { useGLTF } from "@react-three/drei";
-import { useThree } from "@react-three/fiber";
+
 import { useEquirectangularHDR } from "./useEquirectangularHDR";
+import * as THREE from "three";
+import { useFrame } from "@react-three/fiber";
 
 export const LittlestTokyo = () => {
+  let mixer: any = null;
   useEquirectangularHDR();
-  const gltf = useGLTF("/model/gltf/LittlestTokyo.glb", true);
-  //   const { scene: glftScene } = gltf;
-  gltf.scene.position.set(1, 1, 0);
-  gltf.scene.scale.set(0.01, 0.01, 0.01);
+  const { scene, animations } = useGLTF("/model/gltf/LittlestTokyo.glb", true);
 
-  //   scene.add(glftScene);
-  return <primitive object={gltf.scene} dispose={null} />;
+  mixer = new THREE.AnimationMixer(scene);
+
+  mixer.clipAction(animations[0]).play();
+  useFrame((state, delta) => {
+    mixer && mixer.update(delta);
+    // console.log(ca);
+  });
+  return (
+    <primitive
+      object={scene}
+      dispose={null}
+      position={[1, 1, 0]}
+      scale={[0.01, 0.01, 0.01]}
+    />
+  );
 };
 
 useGLTF.preload("/model/gltf/LittlestTokyo.glb");
