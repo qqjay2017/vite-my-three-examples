@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "gltfjsx": "gltfjsx  LittlestTokyo.glb --types  "
   },
   "dependencies": {
     "@react-three/cannon": "^6.5.2",
@@ -16,6 +17,7 @@
     "d3": "^7.8.2",
     "dat.gui": "^0.7.9",
     "detect-browser": "^5.3.0",
+    "gltfjsx": "^6.1.12",
     "gsap": "^3.10.4",
     "leva": "^0.9.34",
     "maath": "^0.5.3",
@@ -35,13 +37,13 @@
     "threejs-meshline": "^2.0.12"
   },
   "devDependencies": {
-    "@types/styled-components": "^5.1.25",
     "@loadable/component": "^5.15.2",
     "@types/d3": "^7.4.0",
     "@types/dat.gui": "^0.7.7",
     "@types/loadable__component": "^5.13.4",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
+    "@types/styled-components": "^5.1.25",
     "@types/three": "^0.152.1",
     "@vitejs/plugin-react": "^4.0.0",
     "less": "^4.1.3",

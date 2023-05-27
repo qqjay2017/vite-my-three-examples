@@ -20,6 +20,10 @@ export default () => {
           position: [5, 2, 8],
         }}
       >
+        {/* <Environment
+          files="https://cdn.jsdelivr.net/gh/Sean-Bradley/React-Three-Fiber-Boilerplate@useGLTF/public/img/workshop_1k.hdr"
+          background
+        /> */}
         <OrbitControls target={[0, 0.5, 0]} enablePan={false} enableDamping />
         <LittlestTokyo />
       </Canvas>
