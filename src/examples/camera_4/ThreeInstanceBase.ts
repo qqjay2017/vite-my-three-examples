@@ -104,7 +104,7 @@ export class ThreeInstanceBase {
       this.renderer.shadowMap.enabled = true;
       // this.renderer.outputColorSpace = THREE.SRGBColorSpace;
       this.renderer.setPixelRatio(window.devicePixelRatio || 1);
-      this.renderer.setSize(this.width, this.height);
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
     this.renderer.render(this.scene, this.watcherCamera);

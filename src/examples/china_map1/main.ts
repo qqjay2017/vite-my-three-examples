@@ -54,6 +54,10 @@ export function operationData(
     const province: any = new THREE.Object3D();
 
     province.properties = feature.properties.name;
+    province.userData = {
+      ...province.userData,
+      ...feature.properties,
+    };
     const coordinates = feature.geometry.coordinates;
     const geometryType = feature.geometry.type;
     if (geometryType == "MultiPolygon") {
@@ -62,6 +66,10 @@ export function operationData(
         item.forEach((coordinate) => {
           const mesh: any = createMesh(coordinate as any);
           mesh.properties = feature.properties.name;
+          mesh.userData = {
+            ...mesh.userData,
+            ...feature.properties,
+          };
           province.add(mesh);
         });
       });
@@ -70,6 +78,10 @@ export function operationData(
       coordinates.forEach((coordinate) => {
         const mesh: any = createMesh(coordinate);
         mesh.properties = feature.properties.name;
+        mesh.userData = {
+          ...mesh.userData,
+          ...feature.properties,
+        };
         province.add(mesh);
       });
     }

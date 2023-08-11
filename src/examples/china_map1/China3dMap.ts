@@ -11,6 +11,9 @@ export class China3dMap extends ThreeInstanceBase {
   directionalLight: THREE.DirectionalLight | null = null;
   map = new THREE.Object3D();
   fileLoader = new THREE.FileLoader();
+  lastPicker: any | null = null;
+  raycaster = new THREE.Raycaster();
+  pointer = new THREE.Vector2();
   createLights(): void {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0);
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
@@ -45,6 +48,7 @@ export class China3dMap extends ThreeInstanceBase {
     if (!_that.scene || !_that.watcherCamera) {
       return;
     }
+    _that.watcherCamera.updateMatrixWorld();
     _that.orbitControls?.update();
     _that.cameraHelper?.update();
     _that.render();
@@ -105,7 +109,51 @@ export class China3dMap extends ThreeInstanceBase {
     this.guiInstance = gui;
   }
   addClickListener() {
-    window.addEventListener("click", () => {});
+    const that = this;
+    function onPointerMove(event: any) {
+      that.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+      that.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      // 获取鼠标点击的位置
+
+      that.raycaster.setFromCamera(that.pointer, that.watcherCamera!);
+      const intersects = that.raycaster.intersectObjects(that.map.children);
+      if (intersects.length > 0) {
+        if (that.lastPicker) {
+          that.lastPicker.material.color.copy(
+            that.lastPicker.material.oldColor
+          ); //恢复原来的颜色
+        }
+        that.lastPicker = intersects[0].object;
+        that.lastPicker.material.oldColor =
+          that.lastPicker.material.color.clone(); // 记录原来的颜色
+        that.lastPicker.material.color.set(0xffffff); // 设置成白色
+      } else {
+        if (that.lastPicker) {
+          that.lastPicker.material.color.copy(
+            that.lastPicker.material.oldColor
+          );
+        }
+      }
+    }
+
+    window.addEventListener("click", onPointerMove);
+    window.addEventListener("mousemove", onPointerMove);
+  }
+  createCamera() {
+    if (!this.scene) {
+      return;
+    }
+    const perspectiveCamera = new THREE.PerspectiveCamera(
+      70,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      100
+    );
+    perspectiveCamera.position.set(0, 0, 40);
+    perspectiveCamera.lookAt(0, 0, 0);
+    this.scene.add(perspectiveCamera);
+    this.watcherCamera = perspectiveCamera;
   }
 
   init(): void {
