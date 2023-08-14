@@ -51,6 +51,8 @@ export class China3dMap extends ThreeInstanceBase {
     _that.watcherCamera.updateMatrixWorld();
     _that.orbitControls?.update();
     _that.cameraHelper?.update();
+    _that.cameraHelper?.update();
+    _that.activeIntersects();
     _that.render();
     requestAnimationFrame(() => {
       _that.animate();
@@ -108,33 +110,35 @@ export class China3dMap extends ThreeInstanceBase {
     }
     this.guiInstance = gui;
   }
+  activeIntersects() {
+    const that = this;
+    if (!that.pointer.x && !that.pointer.y) {
+      return;
+    }
+
+    that.raycaster.setFromCamera(that.pointer, that.watcherCamera!);
+    const intersects = that.raycaster.intersectObjects(that.map.children);
+    if (intersects.length > 0) {
+      if (that.lastPicker) {
+        that.lastPicker.material.color.copy(that.lastPicker.material.oldColor); //恢复原来的颜色
+      }
+      that.lastPicker = intersects[0].object;
+      that.lastPicker.material.oldColor =
+        that.lastPicker.material.color.clone(); // 记录原来的颜色
+      that.lastPicker.material.color.set(0xffffff); // 设置成白色
+    } else {
+      if (that.lastPicker) {
+        that.lastPicker.material.color.copy(that.lastPicker.material.oldColor);
+      }
+    }
+  }
   addClickListener() {
     const that = this;
     function onPointerMove(event: any) {
-      that.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+      // 修复因为左边菜单栏,要减掉220,如果是全屏的,就不用减
+      // https://blog.csdn.net/mo911108/article/details/120158624
+      that.pointer.x = ((event.clientX - 220) / window.innerWidth) * 2 - 1;
       that.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-      // 获取鼠标点击的位置
-
-      that.raycaster.setFromCamera(that.pointer, that.watcherCamera!);
-      const intersects = that.raycaster.intersectObjects(that.map.children);
-      if (intersects.length > 0) {
-        if (that.lastPicker) {
-          that.lastPicker.material.color.copy(
-            that.lastPicker.material.oldColor
-          ); //恢复原来的颜色
-        }
-        that.lastPicker = intersects[0].object;
-        that.lastPicker.material.oldColor =
-          that.lastPicker.material.color.clone(); // 记录原来的颜色
-        that.lastPicker.material.color.set(0xffffff); // 设置成白色
-      } else {
-        if (that.lastPicker) {
-          that.lastPicker.material.color.copy(
-            that.lastPicker.material.oldColor
-          );
-        }
-      }
     }
 
     window.addEventListener("click", onPointerMove);
@@ -148,7 +152,7 @@ export class China3dMap extends ThreeInstanceBase {
       70,
       window.innerWidth / window.innerHeight,
       0.1,
-      100
+      1000
     );
     perspectiveCamera.position.set(0, 0, 40);
     perspectiveCamera.lookAt(0, 0, 0);
