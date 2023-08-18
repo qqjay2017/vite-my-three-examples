@@ -2,7 +2,6 @@ import * as THREE from "three";
 import { GeoJsonRootObject } from "./interface";
 import * as d3 from "d3";
 
-import { getControls } from "/@/lib-common/controls";
 const projection = d3.geoMercator().center([116.5, 38.5]).translate([0, 0]);
 const scene = new THREE.Scene();
 const map = new THREE.Object3D();
@@ -71,6 +70,8 @@ export function operationData(
             ...feature.properties,
           };
           province.add(mesh);
+          const line = createLine(coordinate);
+          province.add(line);
         });
       });
     } else if (geometryType == "Polygon") {
@@ -83,9 +84,31 @@ export function operationData(
           ...feature.properties,
         };
         province.add(mesh);
+        const line = createLine(coordinate);
+        province.add(line);
       });
     }
 
     map.add(province);
   });
+}
+
+/**
+ * 通过点生成线几何体
+ * @param polygon
+ */
+
+function createLine(polygon: any[] = []) {
+  const lineGeometry = new THREE.BufferGeometry();
+  const pointsArray: THREE.Vector3[] = [];
+  polygon.forEach((row, i) => {
+    const [longitude = 0, latitude = 0] = projection(row as any) || [];
+    pointsArray.push(new THREE.Vector3(longitude, -latitude, 5.4));
+  });
+  lineGeometry.setFromPoints(pointsArray);
+  const color = new THREE.Color(Math.random() * 0xffffff);
+  const lineMaterial = new THREE.LineBasicMaterial({
+    color: color,
+  });
+  return new THREE.Line(lineGeometry, lineMaterial);
 }

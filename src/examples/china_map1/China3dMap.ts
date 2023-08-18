@@ -4,6 +4,11 @@ import { ThreeInstanceBase } from "../camera_4/ThreeInstanceBase";
 import { GeoJsonRootObject } from "./interface";
 import { operationData } from "./main";
 
+// 后期合成
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
+import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass";
+
 export class China3dMap extends ThreeInstanceBase {
   mesh: THREE.Mesh | null = null;
   texture: THREE.Texture | null = null;
@@ -159,6 +164,21 @@ export class China3dMap extends ThreeInstanceBase {
     this.scene.add(perspectiveCamera);
     this.watcherCamera = perspectiveCamera;
   }
+  // 添加后期合成
+  addPostprocessing() {
+    if (!this.renderer || !this.scene || !this.watcherCamera) {
+      return;
+    }
+    const composer = new EffectComposer(this.renderer);
+    const renderPass = new RenderPass(this.scene, this.watcherCamera);
+    composer.addPass(renderPass);
+    const outlinePass = new OutlinePass(
+      new THREE.Vector2(window.innerWidth - 220, window.innerHeight),
+      this.scene,
+      this.watcherCamera
+    );
+    composer.addPass(outlinePass);
+  }
 
   init(): void {
     this.createScene();
@@ -171,9 +191,11 @@ export class China3dMap extends ThreeInstanceBase {
     this.helpers();
     this.render();
     this.controls();
+    this.addPostprocessing();
     this.animate();
     this.fitView();
     this.gui();
+    // 添加交互
     this.addClickListener();
   }
 }
