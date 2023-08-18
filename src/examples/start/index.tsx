@@ -8,8 +8,7 @@ let camera: THREE.PerspectiveCamera,
   renderer: THREE.WebGLRenderer,
   clock: THREE.Clock,
   orbitControls: OrbitControls,
-  mesh:THREE.Mesh
-  ,
+  mesh: THREE.Mesh,
   stats: any;
 export default () => {
   const init = () => {
@@ -36,13 +35,13 @@ export default () => {
     // const meshBasicMaterial = new THREE.MeshLambertMaterial({
     //   color: 0xffffff * Math.random(),
     // });
-     mesh = new THREE.Mesh(boxGeometry, groupBasicMaterial);
+    mesh = new THREE.Mesh(boxGeometry, groupBasicMaterial);
     mesh.position.set(0, 0, 0);
     scene.add(mesh);
     // 辅助
     const axesHelper = new THREE.AxesHelper();
     const gridHelper = new THREE.GridHelper();
-    scene.add(axesHelper,gridHelper);
+    scene.add(axesHelper, gridHelper);
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
@@ -78,12 +77,12 @@ export default () => {
   };
 
   const render = () => {
-    const elapsedTime = clock.getElapsedTime()
-   const flag = Math.round(elapsedTime*10)%2==0;
+    const elapsedTime = clock.getElapsedTime();
+    const flag = Math.round(elapsedTime * 10) % 2 == 0;
     //  mesh.rotation.z +=elapsedTime/1000;
     // x轴cos运动  y轴sin运动
-    console.log(Math.cos(elapsedTime)+Math.sin(elapsedTime));
-    mesh.position.set(Math.cos(elapsedTime),Math.sin(elapsedTime),0)
+    console.log(Math.cos(elapsedTime) + Math.sin(elapsedTime));
+    mesh.position.set(Math.cos(elapsedTime), Math.sin(elapsedTime), 0);
 
     //   camera.rotateX = Math.PI
 

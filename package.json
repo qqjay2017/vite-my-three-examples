@@ -34,7 +34,7 @@
     "react-use-refs": "^1.0.1",
     "resize-observer-polyfill": "^1.5.1",
     "styled-components": "^5.3.5",
-    "three": "^0.152.2",
+    "three": "^0.155.0",
     "three-stdlib": "^2.21.11",
     "threejs-meshline": "^2.0.12"
   },

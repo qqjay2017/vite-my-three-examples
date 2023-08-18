@@ -160,12 +160,13 @@ export class China3dMap extends ThreeInstanceBase {
       return;
     }
     const perspectiveCamera = new THREE.PerspectiveCamera(
-      70,
+      40,
       window.innerWidth / window.innerHeight,
-      0.1,
+      1,
       1000
     );
-    perspectiveCamera.position.set(0, 0, 40);
+
+    perspectiveCamera.position.set(0, 100, 0);
     perspectiveCamera.lookAt(0, 0, 0);
     this.scene.add(perspectiveCamera);
     this.watcherCamera = perspectiveCamera;
