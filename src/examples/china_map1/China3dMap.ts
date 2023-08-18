@@ -11,6 +11,7 @@ import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass";
 
 export class China3dMap extends ThreeInstanceBase {
   mesh: THREE.Mesh | null = null;
+  outlinePass: OutlinePass | null = null;
   texture: THREE.Texture | null = null;
   material: THREE.MeshLambertMaterial | null = null;
   directionalLight: THREE.DirectionalLight | null = null;
@@ -38,6 +39,7 @@ export class China3dMap extends ThreeInstanceBase {
 
       operationData(jsonData, {
         map: that.map,
+        // outlinePass: that.outlinePass,
       });
       //   that.map.position.set(200, 200, 0);
       that.scene?.add(that.map);
@@ -169,15 +171,20 @@ export class China3dMap extends ThreeInstanceBase {
     if (!this.renderer || !this.scene || !this.watcherCamera) {
       return;
     }
-    const composer = new EffectComposer(this.renderer);
+    this.composer = new EffectComposer(this.renderer);
+
     const renderPass = new RenderPass(this.scene, this.watcherCamera);
-    composer.addPass(renderPass);
+    this.composer.addPass(renderPass);
     const outlinePass = new OutlinePass(
       new THREE.Vector2(window.innerWidth - 220, window.innerHeight),
       this.scene,
       this.watcherCamera
     );
-    composer.addPass(outlinePass);
+    this.composer.addPass(outlinePass);
+    // 选中边缘发光的物体
+
+    outlinePass.selectedObjects = [this.map];
+    this.outlinePass = outlinePass;
   }
 
   init(): void {
@@ -185,13 +192,15 @@ export class China3dMap extends ThreeInstanceBase {
     this.createLights();
     this.createLoadingManager();
     this.loadTextures();
+    this.createCamera();
+    this.render();
+    this.addPostprocessing();
     this.createObjects();
 
-    this.createCamera();
     this.helpers();
-    this.render();
+
     this.controls();
-    this.addPostprocessing();
+
     this.animate();
     this.fitView();
     this.gui();

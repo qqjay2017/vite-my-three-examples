@@ -2,8 +2,10 @@ import * as dat from "dat.gui";
 import * as THREE from "three";
 import { DragControls } from "three/examples/jsm/controls/DragControls";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 
 export class ThreeInstanceBase {
+  composer: EffectComposer | null = null;
   canvas: HTMLElement | null = null;
   width = window.innerWidth;
   height = window.innerHeight;
@@ -106,8 +108,11 @@ export class ThreeInstanceBase {
       this.renderer.setPixelRatio(window.devicePixelRatio || 1);
       this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
-
-    this.renderer.render(this.scene, this.watcherCamera);
+    if (this.composer) {
+      this.composer.render();
+    } else {
+      this.renderer.render(this.scene, this.watcherCamera);
+    }
   }
   animate(): void {
     const _that = this;

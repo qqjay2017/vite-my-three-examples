@@ -1,10 +1,11 @@
 import * as THREE from "three";
 import { GeoJsonRootObject } from "./interface";
 import * as d3 from "d3";
+import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass";
 
 const projection = d3.geoMercator().center([116.5, 38.5]).translate([0, 0]);
 const scene = new THREE.Scene();
-const map = new THREE.Object3D();
+
 // 辅助
 const axesHelper = new THREE.AxesHelper(5);
 scene.add(axesHelper);
@@ -44,7 +45,10 @@ function createMesh(polygon: (number | number[])[][]) {
 
 export function operationData(
   jsonData: GeoJsonRootObject,
-  { map }: { map: THREE.Object3D }
+  {
+    map,
+    outlinePass,
+  }: { map: THREE.Object3D; outlinePass?: OutlinePass | null }
 ) {
   // 获取所有的特征
   const features = jsonData.features;
@@ -88,6 +92,7 @@ export function operationData(
         province.add(line);
       });
     }
+    outlinePass?.selectedObjects.push(province);
 
     map.add(province);
   });
