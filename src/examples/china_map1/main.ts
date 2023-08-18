@@ -38,7 +38,7 @@ function createMesh(polygon: (number | number[])[][]) {
   const material = new THREE.MeshBasicMaterial({
     color: color,
     transparent: true,
-    opacity: 0.5,
+    opacity: 0.95,
   });
   return new THREE.Mesh(geometry, material);
 }
@@ -74,8 +74,8 @@ export function operationData(
             ...feature.properties,
           };
           province.add(mesh);
-          const line = createLine(coordinate);
-          province.add(line);
+          // const line = createLine(coordinate);
+          // province.add(line);
         });
       });
     } else if (geometryType == "Polygon") {
@@ -88,8 +88,8 @@ export function operationData(
           ...feature.properties,
         };
         province.add(mesh);
-        const line = createLine(coordinate);
-        province.add(line);
+        // const line = createLine(coordinate);
+        // province.add(line);
       });
     }
     outlinePass?.selectedObjects.push(province);

@@ -8,6 +8,7 @@ import { operationData } from "./main";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
 
 export class China3dMap extends ThreeInstanceBase {
   mesh: THREE.Mesh | null = null;
@@ -142,6 +143,9 @@ export class China3dMap extends ThreeInstanceBase {
   addClickListener() {
     const that = this;
     function onPointerMove(event: any) {
+      if (!that.pointer) {
+        that.pointer = new THREE.Vector2();
+      }
       // 修复因为左边菜单栏,要减掉220,如果是全屏的,就不用减
       // https://blog.csdn.net/mo911108/article/details/120158624
       that.pointer.x = ((event.clientX - 220) / window.innerWidth) * 2 - 1;
@@ -172,6 +176,7 @@ export class China3dMap extends ThreeInstanceBase {
       return;
     }
     this.composer = new EffectComposer(this.renderer);
+    this.composer.setSize(window.innerWidth - 220, window.innerHeight);
 
     const renderPass = new RenderPass(this.scene, this.watcherCamera);
     this.composer.addPass(renderPass);
@@ -181,9 +186,29 @@ export class China3dMap extends ThreeInstanceBase {
       this.watcherCamera
     );
     this.composer.addPass(outlinePass);
-    // 选中边缘发光的物体
 
+    const unrealBloomPass = new UnrealBloomPass(
+      // 要影响泛光的画布大小
+      new THREE.Vector2(window.innerWidth - 220, window.innerHeight),
+      // (强度)
+      0.3,
+      // 半径
+      0.3,
+      // 泛光的阈值
+      0.65
+    );
+    this.composer.addPass(unrealBloomPass);
+
+    // 设置选中边缘发光的物体
     outlinePass.selectedObjects = [this.map];
+    // 线条宽度
+    outlinePass.edgeStrength = 3;
+    // 散射
+    outlinePass.edgeGlow = 1;
+    // 呼吸灯
+    outlinePass.pulsePeriod = 5;
+    outlinePass.visibleEdgeColor = new THREE.Color(0xffffff);
+    outlinePass.hiddenEdgeColor = new THREE.Color(0xffffff);
     this.outlinePass = outlinePass;
   }
 
